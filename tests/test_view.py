@@ -43,9 +43,12 @@ def test_view_zarr_with_napari(
     )
 
     # Call the function
-    view_zarr_with_napari(
+    view = view_zarr_with_napari(
         zarr_dir=zarr_dir, scaling_values=scaling_values, headless=True
     )
+
+    # close the view
+    view.close()
 
 
 @pytest.mark.parametrize(
@@ -79,8 +82,11 @@ def test_view_ometiff_with_napari(
     )
 
     # Call the function
-    view_ometiff_with_napari(
+    view = view_ometiff_with_napari(
         ometiff_path=ometiff_path,
         scaling_values=scaling_values,
         headless=True,
     )
+
+    # close the view
+    view.close()
