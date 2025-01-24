@@ -13,7 +13,7 @@ import zarr
 from ome_zarr.io import parse_url as zarr_parse_url
 from ome_zarr.writer import write_image as zarr_write_image
 
-from .meta import extract_z_slice_number_from_filename, generate_ome_xml
+from .image_meta import extract_z_slice_number_from_filename, generate_ome_xml
 
 
 def tiff_to_zarr(

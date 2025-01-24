@@ -8,7 +8,7 @@ from xml.etree.ElementTree import fromstring
 
 import pytest
 
-from nviz.meta import (
+from nviz.image_meta import (
     extract_z_slice_number_from_filename,
     gather_scaling_info_from_scaninfoxml,
     generate_ome_xml,

@@ -10,10 +10,10 @@ nviz.image
    :undoc-members:
    :show-inheritance:
 
-nviz.meta
+nviz.image_meta
 -------------------
 
-.. automodule:: src.nviz.meta
+.. automodule:: src.nviz.image_meta
    :members:
    :private-members:
    :undoc-members:
