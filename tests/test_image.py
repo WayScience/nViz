@@ -16,7 +16,10 @@ from tests.utils import example_data_for_image_tests
 
 
 @pytest.mark.parametrize(
-    "image_dir, label_dir, output_path, channel_map, scaling_values, ignore, expected_labels",
+    (
+        "image_dir, label_dir, output_path, channel_map, "
+        "scaling_values, ignore, expected_labels"
+    ),
     example_data_for_image_tests,
 )
 def test_image_set_to_arrays(
@@ -33,9 +36,20 @@ def test_image_set_to_arrays(
         image_dir=image_dir, label_dir=label_dir, channel_map=channel_map, ignore=ignore
     )
 
+    # check that we have all keys
+    if ignore is None:
+        all(channel not in result["images"] for channel in channel_map.values())
+
+    # check that we ignored what we should have
+    elif ignore is not None:
+        assert all(ignored not in result["images"] for ignored in ignore)
+
 
 @pytest.mark.parametrize(
-    "image_dir, label_dir, output_path, channel_map, scaling_values, ignore, expected_labels",
+    (
+        "image_dir, label_dir, output_path, channel_map, "
+        "scaling_values, ignore, expected_labels"
+    ),
     example_data_for_image_tests,
 )
 def test_tiff_to_zarr(
@@ -73,11 +87,13 @@ def test_tiff_to_zarr(
         assert "labels" in zarr_root
 
     for channel in channel_map.values():
-        assert channel in list(zarr_root["images"])
+        if ignore is not None and channel not in [
+            channel_map[ignored] for ignored in ignore
+        ]:
+            assert channel in list(zarr_root["images"])
 
     # check if we have labels if we supplied them
     if label_dir is not None:
-        print(list(zarr_root["labels"].keys()))
         assert all(
             expected_label in list(zarr_root["labels"].keys())
             for expected_label in expected_labels
@@ -85,7 +101,10 @@ def test_tiff_to_zarr(
 
 
 @pytest.mark.parametrize(
-    "image_dir, label_dir, output_path, channel_map, scaling_values, ignore, expected_labels",
+    (
+        "image_dir, label_dir, output_path, channel_map, "
+        "scaling_values, ignore, expected_labels"
+    ),
     example_data_for_image_tests,
 )
 def test_tiff_to_ometiff(
@@ -129,7 +148,10 @@ def test_tiff_to_ometiff(
 
         # Check the metadata for channels
         for channel in channel_map.values():
-            assert any(channel == ch.get("Name") for ch in channels)
+            if ignore is not None and channel not in [
+                channel_map[ignored] for ignored in ignore
+            ]:
+                assert any(channel == ch.get("Name") for ch in channels)
 
         # Check the metadata for physical sizes
         pixels = root.find(

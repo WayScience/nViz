@@ -105,7 +105,7 @@ def image_set_to_arrays(
     return zstack_arrays
 
 
-def tiff_to_zarr(
+def tiff_to_zarr(  # noqa: PLR0913
     image_dir: str,
     label_dir: Optional[str],
     output_path: str,
@@ -227,7 +227,7 @@ def tiff_to_zarr(
     return output_path
 
 
-def tiff_to_ometiff(
+def tiff_to_ometiff(  # noqa: PLR0913
     image_dir: str,
     label_dir: Optional[str],
     output_path: str,

@@ -51,7 +51,7 @@ example_data_for_image_tests = [
             "555": "Channel E",
         },
         (1.0, 0.1, 0.1),
-        ["Channel E"],
+        ["555"],
         ["compartment (labels)"],
     ),
 ]

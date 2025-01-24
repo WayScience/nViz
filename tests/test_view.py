@@ -13,7 +13,10 @@ from tests.utils import example_data_for_image_tests
 
 
 @pytest.mark.parametrize(
-    "image_dir, label_dir, output_path, channel_map, scaling_values, ignore, expected_labels",
+    (
+        "image_dir, label_dir, output_path, channel_map, "
+        "scaling_values, ignore, expected_labels"
+    ),
     example_data_for_image_tests,
 )
 def test_view_zarr_with_napari(
@@ -46,7 +49,10 @@ def test_view_zarr_with_napari(
 
 
 @pytest.mark.parametrize(
-    "image_dir, label_dir, output_path, channel_map, scaling_values, ignore, expected_labels",
+    (
+        "image_dir, label_dir, output_path, channel_map, "
+        "scaling_values, ignore, expected_labels"
+    ),
     example_data_for_image_tests,
 )
 def test_view_ometiff_with_napari(
