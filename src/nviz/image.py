@@ -16,12 +16,102 @@ from ome_zarr.writer import write_image as zarr_write_image
 from .image_meta import extract_z_slice_number_from_filename, generate_ome_xml
 
 
+def image_set_to_arrays(
+    image_dir: str,
+    label_dir: Optional[str],
+    channel_map: Dict[str, str],
+    ignore: Optional[List[str]] = ["Merge"],
+) -> Dict[str, Dict[str, np.ndarray]]:
+    """
+    Read a set of images as an array of images.
+    We follow a convention of splitting the following
+    into separate nested dictionaries for use by
+    other functions within this project.
+
+    - "images": original images
+    - "labels": images which represent objects of interest
+        within the original "images"
+
+    Args:
+        image_dir (str):
+            Directory containing TIFF image files.
+        label_dir (Optional[str]):
+            Directory containing label TIFF files.
+        channel_map (Dict[str, str]):
+            Mapping from filename codes to channel names.
+        ignore (Optional[List[str]]):
+            List of filename codes to ignore.
+
+    Returns:
+        Dict[str, Dict[str, np.ndarray]]:
+            A dictionary containing two keys: "images" and "labels".
+            Each key maps to another dictionary where the keys are
+            channel names and the values are numpy arrays of images.
+    """
+    # build a reference to the observations
+    zstack_arrays = {
+        "images": {
+            channel_map.get(filename_code, f"Unknown_{filename_code}"): np.stack(
+                [
+                    tiff.imread(tiff_file.path).astype(np.uint16)
+                    for tiff_file in sorted(
+                        files,
+                        key=lambda x: extract_z_slice_number_from_filename(x.name),
+                    )
+                ]
+            ).astype(np.uint16)
+            for filename_code, files in groupby(
+                sorted(
+                    [
+                        file
+                        for file in os.scandir(image_dir)
+                        if (file.name.endswith(".tif") or file.name.endswith(".tiff"))
+                        and (
+                            file.name.split("_")[1] not in ignore
+                            if ignore is not None
+                            else True
+                        )
+                    ],
+                    key=lambda x: x.name.split("_")[1],
+                ),
+                key=lambda x: x.name.split("_")[1],
+            )
+        }
+    }
+
+    if label_dir:
+        zstack_arrays["labels"] = {
+            f"{pathlib.Path(label_name).stem} (labels)": tiff.imread(
+                next(iter(file)).path
+            ).astype(np.uint16)
+            for label_name, file in groupby(
+                sorted(
+                    [
+                        file
+                        for file in os.scandir(label_dir)
+                        if (file.name.endswith(".tif") or file.name.endswith(".tiff"))
+                        and (
+                            file.name.split("_")[0] not in ignore
+                            if ignore is not None
+                            else True
+                        )
+                    ],
+                    key=lambda x: x.name.split("_")[0],
+                ),
+                key=lambda x: x.name.split("_")[0],
+            )
+        }
+
+    return zstack_arrays
+
+
 def tiff_to_zarr(
     image_dir: str,
     label_dir: Optional[str],
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Union[List[int], Tuple[int]],
+    ignore: Optional[List[str]],
 ) -> str:
     """
     Convert TIFF files to OME-Zarr format.
@@ -37,6 +127,8 @@ def tiff_to_zarr(
             Mapping from filename codes to channel names.
         scaling_values (Union[List[int], Tuple[int]]):
             Scaling values for the images.
+        ignore (Optional[List[str]]):
+            List of filename codes to ignore.
 
     Returns:
         str: Path to the output OME-Zarr file.
@@ -55,53 +147,9 @@ def tiff_to_zarr(
         raise NotADirectoryError(f"Image directory {image_dir} does not exist.")
 
     # build a reference to the observations
-    frame_files = {
-        "images": {
-            channel_map[filename_code]: sorted(
-                files, key=lambda x: extract_z_slice_number_from_filename(x.name)
-            )
-            for filename_code, files in groupby(
-                sorted(
-                    [
-                        file
-                        for file in os.scandir(image_dir)
-                        if (file.name.endswith(".tif") or file.name.endswith(".tiff"))
-                        and file.name.split("_")[1] != "Merge"
-                    ],
-                    key=lambda x: x.name.split("_")[1],
-                ),
-                key=lambda x: x.name.split("_")[1],
-            )
-        }
-    }
-
-    if label_dir is not None:
-        frame_files["labels"] = {
-            f"{pathlib.Path(label_name).stem} (labels)": next(iter(file))
-            for label_name, file in groupby(
-                sorted(
-                    os.scandir(label_dir),
-                    key=lambda x: x.name.split("_")[0],
-                ),
-                key=lambda x: x.name.split("_")[0],
-            )
-        }
-
-    # Load images into memory via stacks
-    frame_zstacks = {
-        "images": {
-            channel: np.stack(
-                [tiff.imread(file.path) for file in files], axis=0
-            ).astype(np.uint16)
-            for channel, files in frame_files["images"].items()
-        }
-    }
-
-    if label_dir:
-        frame_zstacks["labels"] = {
-            channel: tiff.imread(tiff_file.path).astype(np.uint16)
-            for channel, tiff_file in frame_files["labels"].items()
-        }
+    frame_zstacks = image_set_to_arrays(
+        image_dir=image_dir, label_dir=label_dir, channel_map=channel_map, ignore=ignore
+    )
 
     # Parse URL and ensure store is compatible
     store = zarr_parse_url(output_path, mode="w").store
@@ -176,8 +224,6 @@ def tiff_to_zarr(
             # Define the multiscales metadata for the group
             group.attrs["multiscales"] = scale_metadata
 
-    print(f"OME-Zarr written to {output_path}")
-
     return output_path
 
 
@@ -187,6 +233,7 @@ def tiff_to_ometiff(
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Union[List[int], Tuple[int]],
+    ignore: Optional[List[str]],
 ) -> str:
     """
     Convert TIFF files to OME-TIFF format.
@@ -202,6 +249,8 @@ def tiff_to_ometiff(
             Mapping from filename codes to channel names.
         scaling_values (Union[List[int], Tuple[int]]):
             Scaling values for the images.
+        ignore (Optional[List[str]]):
+            List of filename codes to ignore.
 
     Returns:
         str: Path to the output OME-TIFF file.
@@ -219,54 +268,9 @@ def tiff_to_ometiff(
     if not pathlib.Path(image_dir).is_dir():
         raise NotADirectoryError(f"Image directory {image_dir} does not exist.")
 
-    # build a reference to the observations
-    frame_files = {
-        "images": {
-            channel_map.get(filename_code, f"Unknown_{filename_code}"): sorted(
-                files, key=lambda x: extract_z_slice_number_from_filename(x.name)
-            )
-            for filename_code, files in groupby(
-                sorted(
-                    [
-                        file
-                        for file in os.scandir(image_dir)
-                        if (file.name.endswith(".tif") or file.name.endswith(".tiff"))
-                        and file.name.split("_")[1] != "Merge"
-                    ],
-                    key=lambda x: x.name.split("_")[1],
-                ),
-                key=lambda x: x.name.split("_")[1],
-            )
-        }
-    }
-
-    if label_dir:
-        frame_files["labels"] = {
-            label_name: next(iter(file))
-            for label_name, file in groupby(
-                sorted(
-                    pathlib.Path(label_dir).glob("*.tiff"),
-                    key=lambda x: x.name.split("_")[0],
-                ),
-                key=lambda x: x.name.split("_")[0],
-            )
-        }
-
-    # Load images into memory via stacks
-    frame_zstacks = {
-        "images": {
-            channel: np.stack(
-                [tiff.imread(file.path) for file in files], axis=0
-            ).astype(np.uint16)
-            for channel, files in frame_files["images"].items()
-        }
-    }
-
-    if label_dir:
-        frame_zstacks["labels"] = {
-            channel: tiff.imread(tiff_file.path).astype(np.uint16)
-            for channel, tiff_file in frame_files["labels"].items()
-        }
+    frame_zstacks = image_set_to_arrays(
+        image_dir=image_dir, label_dir=label_dir, channel_map=channel_map, ignore=ignore
+    )
 
     # Prepare the data for writing
     images_data = []
@@ -305,6 +309,7 @@ def tiff_to_ometiff(
         "PhysicalSizeY": scaling_values[1],
         "PhysicalSizeZ": scaling_values[0],
         # note: we use 7-bit ascii compatible characters below
+        # due to tifffile limitations
         "PhysicalSizeXUnit": "um",
         "PhysicalSizeYUnit": "um",
         "PhysicalSizeZUnit": "um",

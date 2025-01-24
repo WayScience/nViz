@@ -11,12 +11,31 @@ import pytest
 import tifffile as tiff
 import zarr
 
-from nviz.image import tiff_to_ometiff, tiff_to_zarr
+from nviz.image import image_set_to_arrays, tiff_to_ometiff, tiff_to_zarr
 from tests.utils import example_data_for_image_tests
 
 
 @pytest.mark.parametrize(
-    "image_dir, label_dir, output_path, channel_map, scaling_values, expected_labels",
+    "image_dir, label_dir, output_path, channel_map, scaling_values, ignore, expected_labels",
+    example_data_for_image_tests,
+)
+def test_image_set_to_arrays(
+    image_dir: str,
+    label_dir: Optional[str],
+    output_path: str,
+    channel_map: Dict[str, str],
+    scaling_values: Tuple[int, int, int],
+    ignore: Optional[List[str]],
+    expected_labels: List[str],
+):
+    # Call the function
+    result = image_set_to_arrays(
+        image_dir=image_dir, label_dir=label_dir, channel_map=channel_map, ignore=ignore
+    )
+
+
+@pytest.mark.parametrize(
+    "image_dir, label_dir, output_path, channel_map, scaling_values, ignore, expected_labels",
     example_data_for_image_tests,
 )
 def test_tiff_to_zarr(
@@ -25,6 +44,7 @@ def test_tiff_to_zarr(
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Tuple[int, int, int],
+    ignore: Optional[List[str]],
     expected_labels: List[str],
     tmp_path: pathlib.Path,
 ):
@@ -38,6 +58,7 @@ def test_tiff_to_zarr(
         output_path=f"{tmp_path}/{output_path}",
         channel_map=channel_map,
         scaling_values=scaling_values,
+        ignore=ignore,
     )
 
     # Check if the output path exists
@@ -56,6 +77,7 @@ def test_tiff_to_zarr(
 
     # check if we have labels if we supplied them
     if label_dir is not None:
+        print(list(zarr_root["labels"].keys()))
         assert all(
             expected_label in list(zarr_root["labels"].keys())
             for expected_label in expected_labels
@@ -63,7 +85,7 @@ def test_tiff_to_zarr(
 
 
 @pytest.mark.parametrize(
-    "image_dir, label_dir, output_path, channel_map, scaling_values, expected_labels",
+    "image_dir, label_dir, output_path, channel_map, scaling_values, ignore, expected_labels",
     example_data_for_image_tests,
 )
 def test_tiff_to_ometiff(
@@ -72,6 +94,7 @@ def test_tiff_to_ometiff(
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Tuple[int, int, int],
+    ignore: Optional[List[str]],
     expected_labels: List[str],
     tmp_path: pathlib.Path,
 ):
@@ -85,6 +108,7 @@ def test_tiff_to_ometiff(
         output_path=f"{tmp_path}/{output_path}",
         channel_map=channel_map,
         scaling_values=scaling_values,
+        ignore=ignore,
     )
 
     # Check if the output path exists
