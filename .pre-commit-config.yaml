@@ -1,0 +1,77 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+default_language_version:
+  python: python3.11
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+        exclude: |
+          (?x)^(
+              .*\.svg
+          )$
+    -   id: check-yaml
+    -   id: detect-private-key
+-   repo: https://github.com/tox-dev/pyproject-fmt
+    rev: "v2.5.0"
+    hooks:
+    -   id: pyproject-fmt
+-   repo: https://github.com/citation-file-format/cffconvert
+    rev: 5295f87c0e261da61a7b919fc754e3a77edd98a7
+    hooks:
+    -   id: validate-cff
+-   repo: https://github.com/codespell-project/codespell
+    rev: v2.4.0
+    hooks:
+    -   id: codespell
+        exclude: |
+          (?x)^(
+              .*\.lock |
+              .*\.csv |
+              .*\.cff
+          )$
+-   repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.21
+    hooks:
+    -   id: mdformat
+        additional_dependencies:
+        -   mdformat-gfm
+-   repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+    -   id: yamllint
+        exclude: pre-commit-config.yaml
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: "v0.9.3"
+    hooks:
+    -   id: ruff-format
+    -   id: ruff
+-   repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+    -   id: actionlint
+-   repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
+    rev: v0.6.0
+    hooks:
+    -   id: pre-commit-update
+        args: ["--keep", "mdformat", "--keep", "pre-commit-update", "--keep", "cffconvert"]
+-   repo: https://github.com/jendrikseipp/vulture
+    rev: 'v2.14'
+    hooks:
+    -   id: vulture
+-   repo: local
+    hooks:
+    -   id: code-cov-gen
+        name: Generate code coverage
+        language: system
+        entry: uv run coverage run -m pytest
+        pass_filenames: false
+        always_run: true
+-   repo: https://github.com/Weird-Sheep-Labs/coverage-pre-commit
+    rev: 0.1.1
+    hooks:
+    -   id: coverage-xml
+    -   id: coverage-badge
+        args: ["-o", "docs/src/_static/coverage-badge.svg"]

@@ -44,7 +44,6 @@ htmlcov/
 .coverage.*
 .cache
 nosetests.xml
-coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
@@ -169,3 +168,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# custom ignores
+*.zarr
+src/raw_organoid_images_to_omezarr/data/GFF-data
+*.tiff
+*.tif
+_version.py
