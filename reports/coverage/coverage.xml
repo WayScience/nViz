@@ -196,19 +196,19 @@
 						<line number="110" hits="1"/>
 						<line number="124" hits="1"/>
 						<line number="134" hits="1"/>
+						<line number="137" hits="1"/>
 						<line number="138" hits="1"/>
 						<line number="139" hits="1"/>
 						<line number="140" hits="1"/>
-						<line number="141" hits="1"/>
+						<line number="143" hits="1"/>
 						<line number="144" hits="1"/>
-						<line number="145" hits="1"/>
+						<line number="149" hits="1"/>
 						<line number="150" hits="1"/>
-						<line number="151" hits="1"/>
-						<line number="154" hits="1"/>
-						<line number="157" hits="1"/>
+						<line number="153" hits="1"/>
+						<line number="156" hits="1"/>
+						<line number="159" hits="1"/>
 						<line number="160" hits="1"/>
 						<line number="161" hits="1"/>
-						<line number="162" hits="1"/>
 					</lines>
 				</class>
 				<class name="test_image_meta.py" filename="tests/test_image_meta.py" complexity="0" line-rate="1" branch-rate="0">

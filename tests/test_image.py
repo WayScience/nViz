@@ -134,7 +134,6 @@ def test_tiff_to_ometiff(
     assert Path(output_path).exists()
 
     # Read the OME-TIFF file and check its contents
-    # Read the OME-TIFF file and check its contents
     with tiff.TiffFile(output_path) as tif:
         assert len(tif.pages) > 0
         metadata = tif.ome_metadata
