@@ -5,7 +5,13 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 
-This project focuses on ingesting a set of [TIFF](https://en.wikipedia.org/wiki/TIFF) images as [OME-Zarr](https://pmc.ncbi.nlm.nih.gov/articles/PMC9980008/) or OME-TIFF () which are organized by channel and z-slices which compose three dimensional microscopy data for biological objects (such as organoids).
+This project focuses on ingesting a set of [TIFF](https://en.wikipedia.org/wiki/TIFF) images as [OME-Zarr](https://pmc.ncbi.nlm.nih.gov/articles/PMC9980008/) or OME-TIFF.
+Each input image set* are organized by channel and z-slices which form four dimensional (4D) microscopy data.
+These 4D microscopy data contain information for biological objects (such as organoids).
+
+*Image set is loosely defined and changes depending on the context of the data.
+Here it represents a set of images in multiple dimensions that contain information regarding the same sample.
+Each image in an imageset is paired data and must be related as such.
 We read the output with [Napari](https://napari.org/dev/index.html), which provides a way to analyze and understand the 3D image data.
 
 ## Installation
