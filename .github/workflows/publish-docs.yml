@@ -20,32 +20,20 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Fetch tags
-        run: git fetch --all --tags
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Setup for poetry
-        run: |
-          python -m pip install poetry
-          poetry self add "poetry-dynamic-versioning[plugin]"
-      - name: poetry deps
-        run: poetry install
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
       - name: Build documentation
         run: |
           mkdir pages
           touch pages/.nojekyll
           cd docs
-          poetry run sphinx-multiversion src build
+          uv run sphinx-build src build
           # remove any doctrees dirs which aren't needed for publishing
           find ./build -type d -name '.doctrees' -exec rm -rf {} +
           cp -r build/* ../pages/
-      - name: Add index redirector to latest docs
-        run: |
-          cp docs/redirector.html pages/index.html
-      - name: Add media folder to latest docs
-        run: |
-          cp -r docs/src/media pages/media
       - name: Deploy documentation
         uses: JamesIves/github-pages-deploy-action@v4
         with:

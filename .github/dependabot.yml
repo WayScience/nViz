@@ -15,11 +15,13 @@ updates:
       # Check for updates to GitHub Actions every week
       interval: "weekly"
 
-  # Perform checks and updates for python poetry environment.
+  # Perform checks and updates for python uv environment.
+  # This depends on changes to dependabot via:
+  # https://github.com/dependabot/dependabot-core/pull/10040
   # See here for more information:
   # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#pip-and-pip-compile
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      # Check for updates to poetry lockfile every week
+      # Check for updates to uv environment files every week
       interval: "weekly"

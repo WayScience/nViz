@@ -4,7 +4,7 @@ _referenced with modifications from [pycytominer](https://github.com/cytomining/
 # Description
 
 <!--
-Thank you so much for your contribution to coSMicQC!
+Thank you so much for your contribution to nViz!
 
 Please _succinctly_ summarize your proposed change.
 Namely, consider addressing the following questions:
