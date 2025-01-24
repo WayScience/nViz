@@ -1,8 +1,10 @@
 """
 Generates example z-stack TIFF files with randomized data for testing.
 """
+
 import pathlib
-import shutil
+from typing import Tuple
+
 import numpy as np
 import tifffile as tiff
 
@@ -63,17 +65,34 @@ for channel, z_slices in channels.items():
 
 print(f"TIFF files written to {output_dir}")
 
+
 # Create a single multidimensional TIFF file with sphere shapes
-def create_sphere_image(shape, radius, center):
-    """Create a 3D image with a sphere."""
+def create_sphere_image(
+    shape: Tuple[int, int, int], radius: int, center: Tuple[int, int, int]
+) -> np.ndarray:
+    """Create a 3D image with a sphere.
+
+    Args:
+        shape (Tuple[int, int, int]): The shape of the 3D image (z, y, x).
+        radius (int): The radius of the sphere.
+        center (Tuple[int, int, int]): The center of the sphere (z, y, x).
+
+    Returns:
+        np.ndarray: A 3D image with a sphere.
+    """
     z, y, x = np.indices(shape)
-    distance = np.sqrt((z - center[0])**2 + (y - center[1])**2 + (x - center[2])**2)
+    distance = np.sqrt(
+        (z - center[0]) ** 2 + (y - center[1]) ** 2 + (x - center[2]) ** 2
+    )
     sphere = (distance <= radius).astype(np.uint16) * 65535
     return sphere
 
+
 sphere_radius = 20
 sphere_center = (num_z_slices // 2, image_shape[0] // 2, image_shape[1] // 2)
-sphere_image = create_sphere_image((num_z_slices, *image_shape), sphere_radius, sphere_center)
+sphere_image = create_sphere_image(
+    (num_z_slices, *image_shape), sphere_radius, sphere_center
+)
 
 # create a path for labels
 label_path = output_dir.parent / "labels"
@@ -81,7 +100,7 @@ pathlib.Path(label_path).mkdir(exist_ok=True)
 
 # Write the sphere image as a single multidimensional TIFF file
 sphere_tiff_path = label_path / "compartment.tif"
-tiff.imwrite(sphere_tiff_path, sphere_image, photometric='minisblack')
+tiff.imwrite(sphere_tiff_path, sphere_image, photometric="minisblack")
 
 print(f"Sphere TIFF file written to {sphere_tiff_path}")
 
@@ -89,7 +108,7 @@ scaninfo_file = relpath / "ScanInfo.xml"
 
 with open(scaninfo_file, "w") as file:
     file.write(
-"""
+        """
 <?xml version="1.0" encoding="utf-8"?>
 <ScanInfo>
   <Version>0.0.0.0</Version>
@@ -105,4 +124,5 @@ with open(scaninfo_file, "w") as file:
     </Settings>
   </Group>
 </ScanInfo>
-""")
+"""
+    )

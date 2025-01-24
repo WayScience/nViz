@@ -35,8 +35,6 @@ def test_view_zarr_with_napari(
         output_path=f"{tmp_path}/{output_path}",
         channel_map=channel_map,
         scaling_values=scaling_values,
-        overwrite=False,
-        debug=False,
     )
 
     # Call the function
@@ -68,11 +66,11 @@ def test_view_ometiff_with_napari(
         output_path=f"{tmp_path}/{output_path}",
         channel_map=channel_map,
         scaling_values=scaling_values,
-        overwrite=False,
-        debug=False,
     )
 
     # Call the function
     view_ometiff_with_napari(
-        ometiff_path=ometiff_path, scaling_values=scaling_values, headless=True
+        ometiff_path=ometiff_path,
+        scaling_values=scaling_values,
+        headless=True,
     )

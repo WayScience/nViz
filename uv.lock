@@ -1484,7 +1484,7 @@ wheels = [
 
 [[package]]
 name = "nviz"
-version = "0.0.1.post1.dev3+gd924b65"
+version = "0.0.1.post1.dev4+ga808031.d20250124"
 source = { editable = "." }
 dependencies = [
     { name = "napari", extra = ["all"] },
@@ -1521,7 +1521,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "coverage", specifier = ">=7.6.10" },
-    { name = "myst-parser", specifier = ">=4.0.0" },
+    { name = "myst-parser", specifier = ">=4" },
     { name = "pre-commit", specifier = ">=4.0.1" },
     { name = "pydata-sphinx-theme", specifier = ">=0.16.1" },
     { name = "pytest", specifier = ">=8.3.4" },

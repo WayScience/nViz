@@ -2,21 +2,22 @@
 Tests for the image module.
 """
 
-import pytest
-import numpy as np
-import tifffile as tiff
-from typing import Dict, Tuple, Optional, List
-from pathlib import Path
-from nviz.image import tiff_to_zarr, tiff_to_ometiff
-import zarr
 import pathlib
 import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+
+import pytest
+import tifffile as tiff
+import zarr
+
+from nviz.image import tiff_to_ometiff, tiff_to_zarr
 from tests.utils import example_data_for_image_tests
 
 
 @pytest.mark.parametrize(
     "image_dir, label_dir, output_path, channel_map, scaling_values, expected_labels",
-    example_data_for_image_tests
+    example_data_for_image_tests,
 )
 def test_tiff_to_zarr(
     image_dir: str,
@@ -37,8 +38,6 @@ def test_tiff_to_zarr(
         output_path=f"{tmp_path}/{output_path}",
         channel_map=channel_map,
         scaling_values=scaling_values,
-        overwrite=False,
-        debug=False,
     )
 
     # Check if the output path exists
@@ -62,17 +61,20 @@ def test_tiff_to_zarr(
             for expected_label in expected_labels
         )
 
+
 @pytest.mark.parametrize(
     "image_dir, label_dir, output_path, channel_map, scaling_values, expected_labels",
-    example_data_for_image_tests
+    example_data_for_image_tests,
 )
-def test_tiff_to_ometiff(image_dir: str,
+def test_tiff_to_ometiff(
+    image_dir: str,
     label_dir: Optional[str],
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Tuple[int, int, int],
     expected_labels: List[str],
-    tmp_path: pathlib.Path,):
+    tmp_path: pathlib.Path,
+):
     """
     Tests the tiff_to_ometiff function.
     """
@@ -83,8 +85,6 @@ def test_tiff_to_ometiff(image_dir: str,
         output_path=f"{tmp_path}/{output_path}",
         channel_map=channel_map,
         scaling_values=scaling_values,
-        overwrite=False,
-        debug=False,
     )
 
     # Check if the output path exists
@@ -99,14 +99,18 @@ def test_tiff_to_ometiff(image_dir: str,
 
         # Parse the OME-XML metadata
         root = ET.fromstring(metadata)
-        channels = root.find('.//{http://www.openmicroscopy.org/Schemas/OME/2016-06}Pixels').findall('{http://www.openmicroscopy.org/Schemas/OME/2016-06}Channel')
+        channels = root.find(
+            ".//{http://www.openmicroscopy.org/Schemas/OME/2016-06}Pixels"
+        ).findall("{http://www.openmicroscopy.org/Schemas/OME/2016-06}Channel")
 
         # Check the metadata for channels
         for channel in channel_map.values():
-            assert any(channel == ch.get('Name') for ch in channels)
+            assert any(channel == ch.get("Name") for ch in channels)
 
         # Check the metadata for physical sizes
-        pixels = root.find('.//{http://www.openmicroscopy.org/Schemas/OME/2016-06}Pixels')
-        assert pixels.get('PhysicalSizeX') == str(scaling_values[2])
-        assert pixels.get('PhysicalSizeY') == str(scaling_values[1])
-        assert pixels.get('PhysicalSizeZ') == str(scaling_values[0])
+        pixels = root.find(
+            ".//{http://www.openmicroscopy.org/Schemas/OME/2016-06}Pixels"
+        )
+        assert pixels.get("PhysicalSizeX") == str(scaling_values[2])
+        assert pixels.get("PhysicalSizeY") == str(scaling_values[1])
+        assert pixels.get("PhysicalSizeZ") == str(scaling_values[0])

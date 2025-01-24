@@ -3,14 +3,15 @@ Tests for nviz/view.py
 """
 
 import pathlib
-from typing import Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 from xml.etree.ElementTree import fromstring
+
 import pytest
 
 from nviz.meta import (
     extract_z_slice_number_from_filename,
     gather_scaling_info_from_scaninfoxml,
-    generate_ome_xml
+    generate_ome_xml,
 )
 
 
@@ -106,6 +107,7 @@ def test_gather_scaling_info_from_scaninfoxml(
     # check the results
     assert gather_scaling_info_from_scaninfoxml(xml_file) == expected
 
+
 @pytest.mark.parametrize(
     "metadata, expected_channels",
     [
@@ -150,28 +152,32 @@ def test_gather_scaling_info_from_scaninfoxml(
         ),
     ],
 )
-def test_generate_ome_xml(metadata, expected_channels):
+def test_generate_ome_xml(
+    metadata: Dict[str, Union[int, str]], expected_channels: List[str]
+):
     ome_xml = generate_ome_xml(metadata)
-    
+
     # Parse the generated OME-XML
     root = fromstring(ome_xml)
-    
+
     # Verify the Pixels attributes
-    pixels = root.find('.//{http://www.openmicroscopy.org/Schemas/OME/2016-06}Pixels')
+    pixels = root.find(".//{http://www.openmicroscopy.org/Schemas/OME/2016-06}Pixels")
     assert pixels is not None
-    assert pixels.get('SizeC') == str(metadata['SizeC'])
-    assert pixels.get('SizeZ') == str(metadata['SizeZ'])
-    assert pixels.get('SizeY') == str(metadata['SizeY'])
-    assert pixels.get('SizeX') == str(metadata['SizeX'])
-    assert pixels.get('PhysicalSizeX') == str(metadata['PhysicalSizeX'])
-    assert pixels.get('PhysicalSizeY') == str(metadata['PhysicalSizeY'])
-    assert pixels.get('PhysicalSizeZ') == str(metadata['PhysicalSizeZ'])
-    assert pixels.get('PhysicalSizeXUnit') == metadata['PhysicalSizeXUnit']
-    assert pixels.get('PhysicalSizeYUnit') == metadata['PhysicalSizeYUnit']
-    assert pixels.get('PhysicalSizeZUnit') == metadata['PhysicalSizeZUnit']
-    
+    assert pixels.get("SizeC") == str(metadata["SizeC"])
+    assert pixels.get("SizeZ") == str(metadata["SizeZ"])
+    assert pixels.get("SizeY") == str(metadata["SizeY"])
+    assert pixels.get("SizeX") == str(metadata["SizeX"])
+    assert pixels.get("PhysicalSizeX") == str(metadata["PhysicalSizeX"])
+    assert pixels.get("PhysicalSizeY") == str(metadata["PhysicalSizeY"])
+    assert pixels.get("PhysicalSizeZ") == str(metadata["PhysicalSizeZ"])
+    assert pixels.get("PhysicalSizeXUnit") == metadata["PhysicalSizeXUnit"]
+    assert pixels.get("PhysicalSizeYUnit") == metadata["PhysicalSizeYUnit"]
+    assert pixels.get("PhysicalSizeZUnit") == metadata["PhysicalSizeZUnit"]
+
     # Verify the Channel names
-    channels = pixels.findall('{http://www.openmicroscopy.org/Schemas/OME/2016-06}Channel')
+    channels = pixels.findall(
+        "{http://www.openmicroscopy.org/Schemas/OME/2016-06}Channel"
+    )
     assert len(channels) == len(expected_channels)
     for i, channel in enumerate(channels):
-        assert channel.get('Name') == expected_channels[i]
+        assert channel.get("Name") == expected_channels[i]

@@ -2,14 +2,17 @@
 Utilities for viewing n-dimensional data
 """
 
-import pathlib
-import napari
-import zarr
 from typing import Optional
+
+import napari
 import tifffile as tiff
 import xmltodict
+import zarr
 
-def view_zarr_with_napari(zarr_dir: str, scaling_values: tuple, headless: bool = False) -> Optional[napari.Viewer]:
+
+def view_zarr_with_napari(
+    zarr_dir: str, scaling_values: tuple, headless: bool = False
+) -> Optional[napari.Viewer]:
     """
     View a Zarr file created with nviz through napari.
 
@@ -22,7 +25,7 @@ def view_zarr_with_napari(zarr_dir: str, scaling_values: tuple, headless: bool =
             Whether to run in headless mode
             (where we don't run napari and hand
             back the viewer object instead).
-    
+
     Returns:
         Optional[napari.Viewer]]:
             The napari viewer object if not headless,
@@ -58,7 +61,10 @@ def view_zarr_with_napari(zarr_dir: str, scaling_values: tuple, headless: bool =
     # otherwise return the viewer
     return viewer
 
-def view_ometiff_with_napari(ometiff_path: str, scaling_values: tuple, headless: bool = False) -> Optional[napari.Viewer]:
+
+def view_ometiff_with_napari(
+    ometiff_path: str, scaling_values: tuple, headless: bool = False
+) -> Optional[napari.Viewer]:
     """
     View a OME-TIFF file created with nviz through napari.
 
@@ -71,7 +77,7 @@ def view_ometiff_with_napari(ometiff_path: str, scaling_values: tuple, headless:
             Whether to run in headless mode
             (where we don't run napari and hand
             back the viewer object instead).
-    
+
     Returns:
         Optional[napari.Viewer]]:
             The napari viewer object if not headless,
@@ -86,11 +92,14 @@ def view_ometiff_with_napari(ometiff_path: str, scaling_values: tuple, headless:
         combined_data = tif.asarray()
         metadata = xmltodict.parse(tif.ome_metadata)
         channel_names = [
-            channel["@Name"] for channel in metadata["OME"]["Image"]["Pixels"]["Channel"]
+            channel["@Name"]
+            for channel in metadata["OME"]["Image"]["Pixels"]["Channel"]
         ]
 
         # First, add image layers
-        for i, (channel_data, channel_name) in enumerate(zip(combined_data, channel_names)):
+        for i, (channel_data, channel_name) in enumerate(
+            zip(combined_data, channel_names)
+        ):
             if "(labels)" not in channel_name:
                 viewer.add_image(
                     channel_data,
@@ -99,7 +108,9 @@ def view_ometiff_with_napari(ometiff_path: str, scaling_values: tuple, headless:
                 )
 
         # Then, add label layers
-        for i, (channel_data, channel_name) in enumerate(zip(combined_data, channel_names)):
+        for i, (channel_data, channel_name) in enumerate(
+            zip(combined_data, channel_names)
+        ):
             if "(labels)" in channel_name:
                 viewer.add_labels(
                     channel_data,

@@ -2,21 +2,18 @@
 Experiment with GFF image stacks to OME-ZARR with display in Napari.
 """
 
-import pathlib
-import shutil
-from itertools import groupby
-from typing import Union, Tuple, List, Optional, Dict
 import os
+import pathlib
+from itertools import groupby
+from typing import Dict, List, Optional, Tuple, Union
+
 import numpy as np
 import tifffile as tiff
 import zarr
 from ome_zarr.io import parse_url as zarr_parse_url
 from ome_zarr.writer import write_image as zarr_write_image
 
-from .meta import (
-    extract_z_slice_number_from_filename,
-    generate_ome_xml
-)
+from .meta import extract_z_slice_number_from_filename, generate_ome_xml
 
 
 def tiff_to_zarr(
@@ -25,8 +22,6 @@ def tiff_to_zarr(
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Union[List[int], Tuple[int]],
-    overwrite: bool = False,
-    debug: bool = False,
 ) -> str:
     """
     Convert TIFF files to OME-Zarr format.
@@ -42,14 +37,19 @@ def tiff_to_zarr(
             Mapping from filename codes to channel names.
         scaling_values (Union[List[int], Tuple[int]]):
             Scaling values for the images.
-        overwrite (bool):
-            Whether to overwrite existing output. Default is False.
-        debug (bool):
-            Whether to print debug information. Default is False.
 
     Returns:
         str: Path to the output OME-Zarr file.
     """
+
+    # except on dir already existing
+    if pathlib.Path(output_path).is_dir():
+        raise FileExistsError(
+            (
+                f"Output path {output_path} already exists."
+                "Please remove before creating a new Zarr."
+            )
+        )
 
     if not pathlib.Path(image_dir).is_dir():
         raise NotADirectoryError(f"Image directory {image_dir} does not exist.")
@@ -87,14 +87,6 @@ def tiff_to_zarr(
             )
         }
 
-    # Debug: show channel keys and file counts
-    if debug:
-        print(frame_files["images"].keys())
-        for channel, files in frame_files["images"].items():
-            print(f"Channel: {channel}, Files: {len(files)}")
-            for file in files:
-                print(f"  {file.name}")
-
     # Load images into memory via stacks
     frame_zstacks = {
         "images": {
@@ -110,19 +102,6 @@ def tiff_to_zarr(
             channel: tiff.imread(tiff_file.path).astype(np.uint16)
             for channel, tiff_file in frame_files["labels"].items()
         }
-
-    # Debug: show stack shapes
-    if debug:
-        for channel, stack in frame_zstacks["images"].items():
-            print(f"Channel: {channel}, Stack shape: {stack.shape}")
-
-    # Clean up any previous output
-    if overwrite and pathlib.Path(output_path).is_dir():
-        shutil.rmtree(output_path, ignore_errors=True)
-    elif pathlib.Path(output_path).is_dir():
-        raise FileExistsError(
-            f"Output path {output_path} already exists. Use overwrite=True to overwrite."
-        )
 
     # Parse URL and ensure store is compatible
     store = zarr_parse_url(output_path, mode="w").store
@@ -199,20 +178,7 @@ def tiff_to_zarr(
 
     print(f"OME-Zarr written to {output_path}")
 
-    # Debug: show shape of input
-    if debug:
-        print(
-            f"Shape of input: {np.array(list(frame_zstacks['images'].values())).shape}"
-        )
-
-    # Check Zarr file structure
-    frame_zarr = zarr.open(output_path, mode="r")
-    if debug:
-        print(frame_zarr.tree())
-
     return output_path
-
-
 
 
 def tiff_to_ometiff(
@@ -221,8 +187,6 @@ def tiff_to_ometiff(
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Union[List[int], Tuple[int]],
-    overwrite: bool = False,
-    debug: bool = False,
 ) -> str:
     """
     Convert TIFF files to OME-TIFF format.
@@ -238,14 +202,19 @@ def tiff_to_ometiff(
             Mapping from filename codes to channel names.
         scaling_values (Union[List[int], Tuple[int]]):
             Scaling values for the images.
-        overwrite (bool):
-            Whether to overwrite existing output. Default is False.
-        debug (bool):
-            Whether to print debug information. Default is False.
 
     Returns:
         str: Path to the output OME-TIFF file.
     """
+
+    # except on dir already existing
+    if pathlib.Path(output_path).is_file():
+        raise FileExistsError(
+            (
+                f"Output path {output_path} already exists."
+                "Please remove before creating a new OME-TIFF."
+            )
+        )
 
     if not pathlib.Path(image_dir).is_dir():
         raise NotADirectoryError(f"Image directory {image_dir} does not exist.")
@@ -283,17 +252,6 @@ def tiff_to_ometiff(
             )
         }
 
-    # Debug: show channel keys and file counts
-    if debug:
-        print("Frame files (images):")
-        for channel, files in frame_files["images"].items():
-            print(f"Channel: {channel}, Files: {[file.name for file in files]}")
-
-        if "labels" in frame_files:
-            print("Frame files (labels):")
-            for label, file in frame_files["labels"].items():
-                print(f"Label: {label}, File: {file.name}")
-
     # Load images into memory via stacks
     frame_zstacks = {
         "images": {
@@ -309,19 +267,6 @@ def tiff_to_ometiff(
             channel: tiff.imread(tiff_file.path).astype(np.uint16)
             for channel, tiff_file in frame_files["labels"].items()
         }
-
-    # Debug: show stack shapes
-    if debug:
-        for channel, stack in frame_zstacks["images"].items():
-            print(f"Channel: {channel}, Stack shape: {stack.shape}")
-
-        if "labels" in frame_zstacks:
-            for label, stack in frame_zstacks["labels"].items():
-                print(f"Label: {label}, Stack shape: {stack.shape}")
-
-    if overwrite:
-        # Clean up any previous output
-        shutil.rmtree(output_path, ignore_errors=True)
 
     # Prepare the data for writing
     images_data = []
@@ -369,9 +314,6 @@ def tiff_to_ometiff(
 
     # Write the combined data to a single OME-TIFF
     with tiff.TiffWriter(output_path, bigtiff=True) as tif:
-        tif.write(combined_data, description=ome_xml, photometric='minisblack')
-
-    if debug:
-        print(f"OME-TIFF written to {output_path}")
+        tif.write(combined_data, description=ome_xml, photometric="minisblack")
 
     return output_path
