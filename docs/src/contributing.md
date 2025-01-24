@@ -84,13 +84,11 @@ We will check for accuracy, style, code coverage, and scope.
 
 ## Versioning
 
-We use [`poetry-dynamic-versioning`](https://github.com/mtkennerly/poetry-dynamic-versioning) to help version this software through [`PEP 440`](https://peps.python.org/pep-0440/) standards.
+We use [`setuptools-scm`](https://github.com/pypa/setuptools-scm) to help version this software through [`PEP 440`](https://peps.python.org/pep-0440/) standards and [semver.org](https://semver.org/) standards.
 Configuration for versioning is found within the `pyproject.toml` file.
 All builds for packages include dynamic version data to help label distinct versions of the software.
-`poetry-dynamic-versioning` uses `git` tags to help distinguish version data.
-We also use the `__init__.py` file as a place to persist the version data for occaissions where the `git` history is unavailable or unwanted.
-
-The following command is used to add `poetry-dynamic-versioning` to Poetry for use with this project: `poetry self add "poetry-dynamic-versioning[plugin]"`.
+`setuptools-scm` uses `git` tags to help distinguish version data.
+We also use the `_version.py` file as a place to persist the version data for occaissions where the `git` history is unavailable or unwanted (this file is only present in package builds).
 Versioning for the project is intended to align with GitHub Releases which provide `git` tag capabilities.
 
 ### Releases

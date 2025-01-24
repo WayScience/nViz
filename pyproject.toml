@@ -39,6 +39,7 @@ dev = [
 [tool.setuptools_scm]
 root = "."
 version_scheme = "no-guess-dev"
+version_file = "src/nviz/_version.py"
 
 [tool.ruff]
 target-version = "py38"
