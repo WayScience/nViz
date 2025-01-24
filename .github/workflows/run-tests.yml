@@ -10,7 +10,7 @@ on:
 
 jobs:
   pre_commit_checks:
-    runs-on: ubuntu-22.04
+    runs-on: macos-13
     steps:
       # checks out the repo
       - uses: actions/checkout@v4
