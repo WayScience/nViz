@@ -10,9 +10,7 @@ repos:
     -   id: end-of-file-fixer
         exclude: |
           (?x)^(
-              .*\.zattrs |
-              .*\.zgroup |
-              .*\.zarray
+              .*\.svg
           )$
     -   id: check-yaml
     -   id: detect-private-key
