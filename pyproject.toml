@@ -3,7 +3,7 @@ build-backend = "setuptools.build_meta"
 requires = [ "setuptools>=64", "setuptools-scm>=8" ]
 
 [project]
-name = "nVis"
+name = "nviz"
 description = "A tool for creating and visualizing n-dimensional microscopy images."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -27,6 +27,7 @@ dependencies = [
 [dependency-groups]
 # dependency groups for uv
 dev = [
+  "coverage>=7.6.10",
   "pre-commit>=4.0.1",
   "pytest>=8.3.4",
   "setuptools-scm>=8.1",
@@ -72,3 +73,7 @@ pythonpath = [ "." ]
 
 [tool.jupytext]
 formats = "ipynb,py:light"
+
+[tool.vulture]
+min_confidence = 90
+paths = [ "src/nviz", "tests" ]

@@ -2,30 +2,30 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 ---
 cff-version: 1.2.0
-title: gff-3d-organoid-image-format-prototype
+title: nViz
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
 type: software
 authors:
-  - given-names: David
+  - given-names: Dave
     family-names: Bunten
     orcid: 'https://orcid.org/0000-0001-6041-3665'
-  - given-names: Jenna
-    family-names: Tomkinson
-    orcid: 'https://orcid.org/0000-0003-2676-5813'
   - given-names: Michael
     family-names: Lippincott
     orcid: 'https://orcid.org/0000-0002-8637-1448'
+  - given-names: Jenna
+    family-names: Tomkinson
+    orcid: 'https://orcid.org/0000-0003-2676-5813'
   - given-names: Cameron
     family-names: Mattson
     orcid: 'https://orcid.org/0009-0008-4969-779X'
   - given-names: Gregory
     family-names: Way
     orcid: 'https://orcid.org/0000-0002-0503-9348'
-repository-code: 'https://github.com/WayScience/GFF_3D_organoid_image_format_prototype'
+repository-code: 'https://github.com/WayScience/nViz'
 abstract: >-
-  Prototyping image format for GFF 3D organoid project.
+  A tool for creating and visualizing n-dimensional microscopy images.
 keywords:
   - python
   - microscopy
@@ -34,6 +34,7 @@ keywords:
   - data
   - ome-zarr
   - napari
+  - n-dimensional
   - way-lab
 license: BSD-3-Clause
 references:
@@ -518,3 +519,37 @@ references:
       alias: BeanLi
     repository-code: https://github.com/napari/napari
     license: BSD-3-Clause
+  - title: >-
+      The Open Microscopy Environment (OME) Data Model and XML file: open tools for informatics and quantitative analysis in biological imaging
+    type: article
+    issn: 1474-760X
+    issue: 5
+    journal: Genome Biol
+    pages: R47
+    volume: 6
+    url: https://genomebiology.biomedcentral.com/articles/10.1186/gb-2005-6-5-r47
+    authors:
+      - family-names: Goldberg
+        given-names: Ilya G
+      - family-names: Allan
+        given-names: Chris
+      - family-names: Burel
+        given-names: Jean-Marie
+      - family-names: Creager
+        given-names: Doug
+      - family-names: Falconi
+        given-names: Andrea
+      - family-names: Hochheiser
+        given-names: Harry
+      - family-names: Johnston
+        given-names: Josiah
+      - family-names: Mellen
+        given-names: Jeff
+      - family-names: Sorger
+        given-names: Peter K
+      - family-names: Swedlow
+        given-names: Jason R
+    date-published: 2005-05-03
+    identifiers:
+      - type: doi
+        value: 10.1186/gb-2005-6-5-r47

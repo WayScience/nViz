@@ -46,7 +46,7 @@ repos:
     -   id: yamllint
         exclude: pre-commit-config.yaml
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.9.2"
+    rev: "v0.9.3"
     hooks:
     -   id: ruff-format
     -   id: ruff
@@ -59,3 +59,21 @@ repos:
     hooks:
     -   id: pre-commit-update
         args: ["--keep", "mdformat", "--keep", "pre-commit-update", "--keep", "cffconvert"]
+-   repo: https://github.com/jendrikseipp/vulture
+    rev: 'v2.14'
+    hooks:
+    -   id: vulture
+-   repo: local
+    hooks:
+    -   id: code-cov-gen
+        name: Generate code coverage
+        language: system
+        entry: uv run coverage run -m pytest
+        pass_filenames: false
+        always_run: true
+-   repo: https://github.com/Weird-Sheep-Labs/coverage-pre-commit
+    rev: 0.1.1
+    hooks:
+    -   id: coverage-xml
+    -   id: coverage-badge
+        args: ["-o", "docs/src/_static/coverage-badge.svg"]
