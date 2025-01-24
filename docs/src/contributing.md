@@ -102,7 +102,7 @@ Several manual and automated steps are involved with publishing nviz releases.
 See below for an overview of how this works.
 
 Notes about [semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (semver) specifications:
-nviz version specifications are controlled through [`poetry-dynamic-versioning`](https://github.com/mtkennerly/poetry-dynamic-versioning) which leverages [`dunamai`](https://github.com/mtkennerly/dunamai) to create version data based on [git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and commits.
+nviz version specifications are controlled through [`setuptools-scm`](https://github.com/pypa/setuptools-scm) to create version data based on [git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and commits.
 nviz release git tags are automatically applied through [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) and related inferred changes from [`release-drafter`](https://github.com/release-drafter/release-drafter).
 
 1. Open a pull request and use a repository label for `release-<semver release type>` to label the pull request for visibility with [`release-drafter`](https://github.com/release-drafter/release-drafter) (for example, see [nviz#24](https://github.com/wayscience/nviz/pull/24) as a reference of a semver patch update).
@@ -123,9 +123,9 @@ See below for some examples of how to build documentation locally.
 ```shell
 # build single-version sphinx documentation
 # (useful for troubleshooting potential issues)
-poetry run sphinx-build docs/src docs/build
+uv run sphinx-build docs/src docs/build
 
 # build multi-version sphinx documentation
 # (used in production)
-poetry run sphinx-multiversion docs/src docs/build
+uv run sphinx-multiversion docs/src docs/build
 ```
