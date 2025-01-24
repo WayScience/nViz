@@ -38,6 +38,7 @@ dev = [
 
 [tool.setuptools_scm]
 root = "."
+version_scheme = "no-guess-dev"
 
 [tool.ruff]
 target-version = "py38"
