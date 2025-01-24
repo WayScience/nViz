@@ -1,14 +1,4 @@
-# nVis
-
-[![Build Status](https://github.com/WayScience/nViz/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/WayScience/nViz/actions/workflows/run-tests.yml?query=branch%3Amain)
-![Coverage Status](https://raw.githubusercontent.com/WayScience/nViz/main/docs/src/_static/coverage-badge.svg)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
-
-[![Build Status](https://github.com/WayScience/nViz/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/WayScience/nViz/actions/workflows/run-tests.yml?query=branch%3Amain)
-![Coverage Status](https://raw.githubusercontent.com/WayScience/nViz/main/docs/src/_static/coverage-badge.svg)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+# nViz
 
 [![Build Status](https://github.com/WayScience/nViz/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/WayScience/nViz/actions/workflows/run-tests.yml?query=branch%3Amain)
 ![Coverage Status](https://raw.githubusercontent.com/WayScience/nViz/main/docs/src/_static/coverage-badge.svg)
@@ -20,7 +10,7 @@ We read the output with [Napari](https://napari.org/dev/index.html), which provi
 
 ## Installation
 
-Install nViz from [PyPI](https://pypi.org/project/coSMicQC/) or from source:
+Install nViz from [PyPI](https://pypi.org/project/nViz/) or from source:
 
 ```shell
 # install from pypi
