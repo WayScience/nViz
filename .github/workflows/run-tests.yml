@@ -21,6 +21,7 @@ jobs:
           python-version: "3.11"
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v5
+      - uses: tlambert03/setup-qt-libs@v1
       - uses: pre-commit/action@v3.0.1
   run_tests:
     strategy:
@@ -39,5 +40,6 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v5
+      - uses: tlambert03/setup-qt-libs@v1
       - name: Run pytest
         run: uv run pytest
