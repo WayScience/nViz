@@ -2,12 +2,15 @@
 Utilities for viewing n-dimensional data
 """
 
+import logging
 from typing import Optional
 
 import napari
 import tifffile as tiff
 import xmltodict
 import zarr
+
+logger = logging.getLogger(__name__)
 
 
 def view_zarr_with_napari(
@@ -57,6 +60,10 @@ def view_zarr_with_napari(
     if not headless:
         # Start the Napari event loop
         napari.run()
+    else:
+        logger.warning(
+            "Running view in headless mode and returning a napari viewer object."
+        )
 
     # otherwise return the viewer
     return viewer
@@ -121,6 +128,10 @@ def view_ometiff_with_napari(
     if not headless:
         # Start the Napari event loop
         napari.run()
+    else:
+        logger.warning(
+            "Running view in headless mode and returning a napari viewer object."
+        )
 
     # otherwise return the viewer
     return viewer
