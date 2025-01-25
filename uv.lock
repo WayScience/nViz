@@ -1484,7 +1484,7 @@ wheels = [
 
 [[package]]
 name = "nviz"
-version = "0.0.1.post1.dev16+g9fdb622.d20250124"
+version = "0.0.2.post1.dev1"
 source = { editable = "." }
 dependencies = [
     { name = "napari", extra = ["all"] },

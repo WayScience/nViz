@@ -39,6 +39,7 @@ dev = [
 [tool.setuptools_scm]
 root = "."
 version_scheme = "no-guess-dev"
+local_scheme = "no-local-version"
 version_file = "src/nviz/_version.py"
 
 [tool.ruff]
