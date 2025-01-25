@@ -280,12 +280,15 @@ def tiff_to_ometiff(  # noqa: PLR0913
 
     # Collect image data
     for channel, stack in frame_zstacks["images"].items():
+        raw_image_dim = len(stack.shape)
         images_data.append(stack)
         channel_names.append(channel)
 
     # Collect label data
     if label_dir:
         for compartment_name, stack in frame_zstacks["labels"].items():
+            if len(stack.shape) != raw_image_dim and len(stack.shape) == 3:
+                labels_data.append(np.expand_dims(stack, axis=0))
             labels_data.append(stack)
             label_names.append(f"{compartment_name} (labels)")
 
