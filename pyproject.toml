@@ -27,7 +27,12 @@ dependencies = [
 [dependency-groups]
 # dependency groups for uv
 dev = [
+  "black>=24.10.0",
   "coverage>=7.6.10",
+  "isort>=5.13.2",
+  "jupyterlab>=4.3.4",
+  "jupyterlab-code-formatter>=3.0.2",
+  "jupytext>=1.16.6",
   "myst-parser>=4",
   "pre-commit>=4.0.1",
   "pydata-sphinx-theme>=0.16.1",

@@ -111,7 +111,7 @@ def tiff_to_zarr(  # noqa: PLR0913
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Union[List[int], Tuple[int]],
-    ignore: Optional[List[str]],
+    ignore: Optional[List[str]] = ["Merge"],
 ) -> str:
     """
     Convert TIFF files to OME-Zarr format.
@@ -233,7 +233,7 @@ def tiff_to_ometiff(  # noqa: PLR0913
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Union[List[int], Tuple[int]],
-    ignore: Optional[List[str]],
+    ignore: Optional[List[str]] = ["Merge"],
 ) -> str:
     """
     Convert TIFF files to OME-TIFF format.
@@ -287,7 +287,7 @@ def tiff_to_ometiff(  # noqa: PLR0913
     if label_dir:
         for compartment_name, stack in frame_zstacks["labels"].items():
             labels_data.append(stack)
-            label_names.append(f"{compartment_name} (labels)")
+            label_names.append(compartment_name)
 
     # Stack the images and labels along a new axis for channels
     images_data = np.stack(images_data, axis=0)
