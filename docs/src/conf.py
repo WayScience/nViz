@@ -30,7 +30,7 @@ author = "WayScience Community"
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "myst_parser",
+    "myst_nb",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
@@ -80,3 +80,6 @@ html_css_files = ["custom.css"]
 
 # set option to avoid rendering default variables
 autodoc_preserve_defaults = True
+
+# enable anchor creation
+myst_heading_anchors = 3

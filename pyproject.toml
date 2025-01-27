@@ -33,6 +33,7 @@ dev = [
   "jupyterlab>=4.3.4",
   "jupyterlab-code-formatter>=3.0.2",
   "jupytext>=1.16.6",
+  "myst-nb>=1.1.2",
   "myst-parser>=4",
   "pre-commit>=4.0.1",
   "pydata-sphinx-theme>=0.16.1",

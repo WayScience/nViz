@@ -176,3 +176,4 @@ src/raw_organoid_images_to_omezarr/data/GFF-data
 *.tiff
 *.tif
 _version.py
+*.png
