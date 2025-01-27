@@ -39,5 +39,7 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v5
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
       - name: Run pytest
         run: uv run --frozen pytest

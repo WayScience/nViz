@@ -38,7 +38,7 @@ def view_zarr_with_napari(
     frame_zarr = zarr.open(zarr_dir, mode="r")
 
     # Visualize with napari, start in 3d mode
-    viewer = napari.Viewer(ndisplay=3, show=False if headless else True)  # noqa: SIM211
+    viewer = napari.Viewer(ndisplay=3)
 
     # Iterate through each channel in the Zarr file
     for channel_name in sorted(frame_zarr["images"].keys(), reverse=True):
@@ -92,7 +92,7 @@ def view_ometiff_with_napari(
     """
 
     # Visualize with napari, start in 3d mode
-    viewer = napari.Viewer(ndisplay=3, show=False if headless else True)  # noqa: SIM211
+    viewer = napari.Viewer(ndisplay=3, show=False if headless else True)
 
     # Read and add layers from the combined OME-TIFF file
     with tiff.TiffFile(ometiff_path) as tif:
