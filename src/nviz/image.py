@@ -41,6 +41,8 @@ def image_set_to_arrays(
             Mapping from filename codes to channel names.
         ignore (Optional[List[str]]):
             List of filename codes to ignore.
+            Defaults to ["Merge"], which is a
+            code for merged images.
 
     Returns:
         Dict[str, Dict[str, np.ndarray]]:
@@ -129,6 +131,8 @@ def tiff_to_zarr(  # noqa: PLR0913
             Scaling values for the images.
         ignore (Optional[List[str]]):
             List of filename codes to ignore.
+            Defaults to ["Merge"], which is a
+            code for merged images.
 
     Returns:
         str: Path to the output OME-Zarr file.
@@ -251,6 +255,8 @@ def tiff_to_ometiff(  # noqa: PLR0913
             Scaling values for the images.
         ignore (Optional[List[str]]):
             List of filename codes to ignore.
+            Defaults to ["Merge"], which is a
+            code for merged images.
 
     Returns:
         str: Path to the output OME-TIFF file.

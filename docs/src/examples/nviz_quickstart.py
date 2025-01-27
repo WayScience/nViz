@@ -33,16 +33,18 @@ test_label_dir = "../../../tests/data/random_tiff_z_stacks/labels/"
 output_ome_tiff_path = "./example.ome.tiff"
 output_zarr_path = "./example.zarr"
 # scaling values in micrometers for z, y, and x dimensions.
-# This is typically a priori knowledge (may be found in raw
-# microscopy data for example in a TIFF file or other
-# metadata such as XML)
+# Note: This is typically a priori knowledge that is usually
+# found in raw microscopy data (for example raw TIFF files
+# or other microscopy metadata files [like XML]).
 scaling_values = (1.0, 0.1, 0.1)
 
-# if we already have a demo tiff file, remove it
+# If we already have a demo tiff file, remove it.
+# (We are demoing the full nViz process from scratch.)
 if (tiff_path := pathlib.Path(output_ome_tiff_path)).is_file():
     tiff_path.unlink()
 
-# if we already have a demo zarr dir, remove it
+# If we already have a demo zarr dir, remove it
+# (We are demoing the full nViz process from scratch.)
 if (zarr_path := pathlib.Path(output_zarr_path)).is_dir():
     shutil.rmtree(output_zarr_path)
 # -
@@ -50,11 +52,14 @@ if (zarr_path := pathlib.Path(output_zarr_path)).is_dir():
 # show our images
 list(pathlib.Path(test_image_dir).rglob("*.tif"))
 
-# show our labels
+# show our label files (in this case, segmentation masks)
+# Other labels might include outlines, bounding boxes,
+# or similar data stored as images which provide
+# information about objects of interest.
 list(pathlib.Path(test_label_dir).rglob("*.tif"))
 
 # +
-# convert original data into OME-TIFF format through nViz
+# convert original raw TIFF into OME-TIFF format using nViz
 
 nviz_ome_tiff = nviz.tiff_to_ometiff(
     # specify an image directory (original images)
@@ -63,7 +68,10 @@ nviz_ome_tiff = nviz.tiff_to_ometiff(
     label_dir=test_label_dir,
     # specify an output path
     output_path=output_ome_tiff_path,
-    # map filename patterns to channel names
+    # Map filename patterns to channel names.
+    # Note: the keys of this dictionary correspond to information
+    # found in the file name. The value pairs are customizable, and
+    # they will display as specified here inside a Napari window.
     channel_map={
         "111": "Channel A",
         "222": "Channel B",
@@ -93,7 +101,7 @@ nbscreenshot(viewer=viewer, canvas_only=False)
 
 # +
 # convert original data into a Zarr which
-# includes OME-Zarr images format through nViz
+# includes OME-Zarr images format using nViz
 
 nviz_zarr = nviz.tiff_to_zarr(
     # specify an image directory (original images)
@@ -102,7 +110,10 @@ nviz_zarr = nviz.tiff_to_zarr(
     label_dir=test_label_dir,
     # specify an output path
     output_path=output_zarr_path,
-    # map filename patterns to channel names
+    # Map filename patterns to channel names.
+    # Note: the keys of this dictionary correspond to information
+    # found in the file name. The value pairs are customizable, and
+    # they will display as specified here inside a Napari window.
     channel_map={
         "111": "Channel A",
         "222": "Channel B",
