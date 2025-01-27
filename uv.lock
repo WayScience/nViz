@@ -1484,7 +1484,7 @@ wheels = [
 
 [[package]]
 name = "nviz"
-version = "0.0.2.post1.dev1"
+version = "0.0.post1.dev5"
 source = { editable = "." }
 dependencies = [
     { name = "napari", extra = ["all"] },
@@ -1511,7 +1511,7 @@ dev = [
 requires-dist = [
     { name = "napari", extras = ["all"], specifier = ">=0.5.5" },
     { name = "napari-ome-zarr", specifier = ">=0.6.1" },
-    { name = "numpy", specifier = "<2.1" },
+    { name = "numpy", specifier = "<2.3" },
     { name = "ome-zarr", specifier = ">=0.10.2" },
     { name = "tifffile", specifier = ">=2024.12.12" },
     { name = "xmltodict", specifier = ">=0.14.2" },
