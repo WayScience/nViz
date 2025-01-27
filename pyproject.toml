@@ -27,7 +27,7 @@ dependencies = [
 [dependency-groups]
 # dependency groups for uv
 dev = [
-  "black>=24.10.0",
+  "black>=24.10",
   "coverage>=7.6.10",
   "isort>=5.13.2",
   "jupyterlab>=4.3.4",

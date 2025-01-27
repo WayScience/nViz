@@ -15,14 +15,16 @@
 # # nViz Quickstart Guide
 #
 # This notebook helps demonstrate how to use `nViz` quickly.
-# We use demonstrational data found within this repository to perform the demonstrations.
+# We use demonstrational data found within this repository
+# to help show how the software works.
 
 # +
 import pathlib
 import shutil
 
-import nviz
 from napari.utils import nbscreenshot
+
+import nviz
 
 # +
 # setup paths and prepare filesystem
@@ -74,8 +76,11 @@ nviz_ome_tiff = nviz.tiff_to_ometiff(
 nviz_ome_tiff
 # -
 
-# view the ome-tiff in napari (will open a new window and also returns the viewer object)
-viewer = nviz.view_ometiff_with_napari(ometiff_path=nviz_ome_tiff, scaling_values=scaling_values)
+# view the ome-tiff in napari
+# (will open a new window and also returns the viewer object)
+viewer = nviz.view_ometiff_with_napari(
+    ometiff_path=nviz_ome_tiff, scaling_values=scaling_values
+)
 
 # show the napari window within this notebook to help demonstrate output
 viewer.window.resize(1000, 700)
@@ -110,8 +115,11 @@ nviz_zarr = nviz.tiff_to_zarr(
 nviz_zarr
 # -
 
-# view the zarr in napari (will open a new window and also returns the viewer object)
-viewer = nviz.view_zarr_with_napari(zarr_dir=output_zarr_path, scaling_values=scaling_values)
+# view the zarr in napari
+# (will open a new window and also returns the viewer object)
+viewer = nviz.view_zarr_with_napari(
+    zarr_dir=output_zarr_path, scaling_values=scaling_values
+)
 
 # show the napari window within this notebook to help demonstrate output
 viewer.window.resize(1000, 700)

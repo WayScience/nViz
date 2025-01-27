@@ -30,7 +30,8 @@ repos:
           (?x)^(
               .*\.lock |
               .*\.csv |
-              .*\.cff
+              .*\.cff |
+              .*\.ipynb
           )$
 -   repo: https://github.com/executablebooks/mdformat
     rev: 0.7.21

@@ -1951,7 +1951,7 @@ wheels = [
 
 [[package]]
 name = "nviz"
-version = "0.0.post1.dev4"
+version = "0.0.post1.dev5"
 source = { editable = "." }
 dependencies = [
     { name = "napari", extra = ["all"] },
@@ -1992,7 +1992,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "black", specifier = ">=24.10.0" },
+    { name = "black", specifier = ">=24.10" },
     { name = "coverage", specifier = ">=7.6.10" },
     { name = "isort", specifier = ">=5.13.2" },
     { name = "jupyterlab", specifier = ">=4.3.4" },
