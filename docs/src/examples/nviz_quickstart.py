@@ -32,7 +32,10 @@ test_image_dir = "../../../tests/data/random_tiff_z_stacks/Z99/"
 test_label_dir = "../../../tests/data/random_tiff_z_stacks/labels/"
 output_ome_tiff_path = "./example.ome.tiff"
 output_zarr_path = "./example.zarr"
-# scaling values in micrometers for z, y, and x dimensions
+# scaling values in micrometers for z, y, and x dimensions.
+# This is typically a priori knowledge (may be found in raw
+# microscopy data for example in a TIFF file or other
+# metadata such as XML)
 scaling_values = (1.0, 0.1, 0.1)
 
 # if we already have a demo tiff file, remove it
