@@ -53,7 +53,7 @@ def view_zarr_with_napari(
         for label_name in sorted(frame_zarr["labels"].keys(), reverse=True):
             viewer.add_labels(
                 frame_zarr["labels"][label_name]["0"][:],
-                name=f"{label_name} (label)",
+                name=f"{label_name}",
                 scale=scaling_values,
             )
 
