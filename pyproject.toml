@@ -15,7 +15,7 @@ classifiers = [
 ]
 dynamic = [ "version" ]
 dependencies = [
-  "napari[all]>=0.5.5",
+  "napari>=0.5.5",
   "napari-ome-zarr>=0.6.1",
   "numpy<2.3",
   "ome-zarr>=0.10.2",
@@ -29,6 +29,7 @@ dependencies = [
 dev = [
   "coverage>=7.6.10",
   "myst-parser>=4",
+  "poethepoet>=0.32.2",
   "pre-commit>=4.0.1",
   "pydata-sphinx-theme>=0.16.1",
   "pytest>=8.3.4",
@@ -83,3 +84,12 @@ formats = "ipynb,py:light"
 [tool.vulture]
 min_confidence = 90
 paths = [ "src/nviz", "tests" ]
+
+[tool.poe.tasks]
+# Create a local docker image and run it
+# with this directory mapped to /nviz
+# for development within linux environments.
+docker-run.shell = """
+docker build --platform linux/amd64 -t nviz:latest -f tests/Dockerfile .
+docker run --platform linux/amd64 -it --rm -v $PWD:/nviz nviz
+"""

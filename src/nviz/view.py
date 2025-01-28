@@ -92,7 +92,7 @@ def view_ometiff_with_napari(
     """
 
     # Visualize with napari, start in 3d mode
-    viewer = napari.Viewer(ndisplay=3, show=False if headless else True)
+    viewer = napari.Viewer(ndisplay=3)
 
     # Read and add layers from the combined OME-TIFF file
     with tiff.TiffFile(ometiff_path) as tif:

@@ -61,6 +61,10 @@ repos:
     rev: 'v2.14'
     hooks:
     -   id: vulture
+-   repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+    -   id: hadolint
 -   repo: local
     hooks:
     -   id: code-cov-gen
