@@ -4,7 +4,7 @@ name: tests
 
 on:
   push:
-    branches: [main, linux-tests]
+    branches: [main]
   pull_request:
     branches: [main]
 
