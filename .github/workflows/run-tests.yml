@@ -10,7 +10,7 @@ on:
 
 jobs:
   pre_commit_checks:
-    runs-on: macos-13
+    runs-on: ubuntu-22.04
     steps:
       # checks out the repo
       - uses: actions/checkout@v4
@@ -30,7 +30,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       OS: ${{ matrix.os }}
-      NAPARI_ASYNC: "1"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
