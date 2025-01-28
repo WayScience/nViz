@@ -15,4 +15,5 @@ maxdepth: 3
 python-api
 contributing
 code_of_conduct
+examples
 ```
