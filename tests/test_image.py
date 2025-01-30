@@ -7,33 +7,18 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-import numpy as np
 import pytest
 import tifffile as tiff
 import zarr
 
 from nviz.image import (
-    check_image_dimensionality,
     image_set_to_arrays,
     tiff_to_ometiff,
     tiff_to_zarr,
 )
 from tests.utils import (
-    example_data_for_checking_image_dimensionality,
     example_data_for_image_tests,
 )
-
-
-@pytest.mark.parametrize(
-    ("arrays, expected_dim"),
-    example_data_for_checking_image_dimensionality,
-)
-def test_check_image_dimensionality(arrays: Dict[str, np.ndarray], expected_dim: int):
-    """
-    Tests the check_image_dimensionality function.
-    """
-    # ensure no errors are raised
-    assert expected_dim == check_image_dimensionality(arrays, expected_dim)
 
 
 @pytest.mark.parametrize(
