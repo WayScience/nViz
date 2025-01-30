@@ -2,6 +2,19 @@
 Utilities for testing.
 """
 
+import numpy as np
+
+example_data_for_checking_image_dimensionality = [
+    (
+        {
+            "images": np.array([[[[1, 1], [1, 1]], [[1, 1], [1, 1]]]]),
+            "labels": np.array([[[[1, 1], [1, 1]], [[1, 1], [1, 1]]]]),
+        },
+        4,
+    )
+]
+
+
 # data examples for use with pytest parameterized tests
 # (creating a data value here because it's simpler to use
 # than a fixture inside parameterized tests).

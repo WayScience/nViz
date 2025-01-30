@@ -16,11 +16,31 @@ from ome_zarr.writer import write_image as zarr_write_image
 from .image_meta import extract_z_slice_number_from_filename, generate_ome_xml
 
 
+def check_image_dimensionality(
+    arrays: Dict[str, np.ndarray], expected_dim: int
+) -> Tuple[None, np.ndarray]:
+    print(arrays["images"])
+    print(arrays["labels"])
+    if arrays["images"].shape == arrays["labels"].shape == (expected_dim,):
+        return arrays["labels"].shape
+    elif (
+        arrays["images"].shape[0] == expected_dim
+        and arrays["labels"].shape[0] != expected_dim
+    ):
+        if arrays["labels"].shape[0] < expected_dim:
+            arrays["labels"].append(np.expand_dims(arrays["labels"], axis=0))
+        else:
+            raise ValueError("Labels have more dimensions than images.")
+    else:
+        raise ValueError("Images do not have the same dimensions as labels.")
+
+
 def image_set_to_arrays(
     image_dir: str,
     label_dir: Optional[str],
     channel_map: Dict[str, str],
     ignore: Optional[List[str]] = ["Merge"],
+    expected_dim: int = 4,
 ) -> Dict[str, Dict[str, np.ndarray]]:
     """
     Read a set of images as an array of images.
@@ -101,7 +121,7 @@ def image_set_to_arrays(
                 key=lambda x: x.name.split("_")[0],
             )
         }
-
+    # check_image_dimensionality(zstack_arrays, expected_dim)
     return zstack_arrays
 
 
@@ -280,15 +300,12 @@ def tiff_to_ometiff(  # noqa: PLR0913
 
     # Collect image data
     for channel, stack in frame_zstacks["images"].items():
-        raw_image_dim = len(stack.shape)
         images_data.append(stack)
         channel_names.append(channel)
 
     # Collect label data
     if label_dir:
         for compartment_name, stack in frame_zstacks["labels"].items():
-            if len(stack.shape) != raw_image_dim and len(stack.shape) == 3:
-                labels_data.append(np.expand_dims(stack, axis=0))
             labels_data.append(stack)
             label_names.append(f"{compartment_name} (labels)")
 
