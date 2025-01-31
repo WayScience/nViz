@@ -45,6 +45,7 @@ jobs:
         # referenced from
         # https://pytest-qt.readthedocs.io/en/latest/troubleshooting.html
         run: |
+          sudo apt install python3-pyqt5 && \
           /sbin/start-stop-daemon \
           --start --quiet --pidfile \
           /tmp/custom_xvfb_99.pid --make-pidfile \
