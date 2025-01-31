@@ -15,7 +15,7 @@ classifiers = [
 ]
 dynamic = [ "version" ]
 dependencies = [
-  "napari>=0.5.5",
+  "napari[all]>=0.5.5",
   "napari-ome-zarr>=0.6.1",
   "numpy<2.3",
   "ome-zarr>=0.10.2",
