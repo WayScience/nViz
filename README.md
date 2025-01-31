@@ -36,7 +36,7 @@ PyQT has specific requirements based on the operating system which sometimes can
 Below are some steps to try if you find that `nViz` visualizations through Napari are resulting in QT-related errors.
 
 - Attempt to install `python3-pyqt5` through your system package manager (e.g. `apt install python3-pyqt5`).
-- When using `nViz` within GitHub Actions Linux environments, consider referencing the following [documentation from `pytest-qt` troubleshooting](https://pytest-qt.readthedocs.io/en/latest/troubleshooting.html).
+- When using `nViz` within GitHub Actions Linux environments, consider using [pyvista/setup-headless-display-action](https://github.com/pyvista/setup-headless-display-action) with `qt: true` in order to run without general exceptions.
 
 ## Contributing, Development, and Testing
 
