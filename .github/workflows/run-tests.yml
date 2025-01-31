@@ -39,31 +39,9 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: Display configuration for Ubuntu
         if: ${{ matrix.os == 'ubuntu-22.04' }}
-        # referenced from
-        # https://pytest-qt.readthedocs.io/en/latest/troubleshooting.html
-        run: |
-          sudo apt install \
-          libxkbcommon-x11-0 \
-          libxcb-icccm4 \
-          libxcb-image0 \
-          libxcb-keysyms1 \
-          libxcb-randr0 \
-          libxcb-render-util0 \
-          libxcb-xinerama0 \
-          libxcb-xfixes0 x11-utils && \
-          /sbin/start-stop-daemon \
-          --start \
-          --quiet \
-          --pidfile \
-          /tmp/custom_xvfb_99.pid \
-          --make-pidfile \
-          --background \
-          --exec \
-          /usr/bin/Xvfb \
-          -- :99 \
-          -screen 0 \
-          1920x1200x24 \
-          -ac +extension GLX
+        uses: pyvista/setup-headless-display-action@v3
+        with:
+          qt: true
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v5
       - name: Run pytest
