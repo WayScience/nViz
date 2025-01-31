@@ -27,6 +27,17 @@ pip install nviz
 pip install git+https://github.com/WayScience/nViz.git
 ```
 
+### Installation notes for Linux
+
+`nViz` leverages Napari to help render visuals.
+Napari leverages [PyQT](https://riverbankcomputing.com/software/pyqt/intro) to help build graphical components.
+PyQT has specific requirements based on the operating system which sometimes can cause errors within Napari, and as a result, also `nViz`.
+
+Below are some steps to try if you find that `nViz` visualizations through Napari are resulting in QT-related errors.
+
+- Attempt to install `python3-pyqt5` through your system package manager (e.g. `apt install python3-pyqt5`).
+- When using `nViz` within GitHub Actions Linux environments, consider using [pyvista/setup-headless-display-action](https://github.com/pyvista/setup-headless-display-action) with `qt: true` in order to run without general exceptions.
+
 ## Contributing, Development, and Testing
 
 Please see our [contributing](https://WayScience.github.io/coSMicQC/main/contributing) documentation for more details on contributions, development, and testing.
