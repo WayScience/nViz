@@ -18,8 +18,8 @@ from .image_meta import extract_z_slice_number_from_filename, generate_ome_xml
 
 def image_set_to_arrays(
     image_dir: str,
-    label_dir: Optional[str],
     channel_map: Dict[str, str],
+    label_dir: Optional[str] = None,
     ignore: Optional[List[str]] = ["Merge"],
 ) -> Dict[str, Dict[str, np.ndarray]]:
     """
@@ -35,10 +35,10 @@ def image_set_to_arrays(
     Args:
         image_dir (str):
             Directory containing TIFF image files.
-        label_dir (Optional[str]):
-            Directory containing label TIFF files.
         channel_map (Dict[str, str]):
             Mapping from filename codes to channel names.
+        label_dir (Optional[str]):
+            Directory containing label TIFF files. Defaults to None.
         ignore (Optional[List[str]]):
             List of filename codes to ignore.
             Defaults to ["Merge"], which is a
@@ -109,10 +109,10 @@ def image_set_to_arrays(
 
 def tiff_to_zarr(  # noqa: PLR0913
     image_dir: str,
-    label_dir: Optional[str],
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Union[List[int], Tuple[int]],
+    label_dir: Optional[str] = None,
     ignore: Optional[List[str]] = ["Merge"],
 ) -> str:
     """
@@ -121,14 +121,14 @@ def tiff_to_zarr(  # noqa: PLR0913
     Args:
         image_dir (str):
             Directory containing TIFF image files.
-        label_dir (Optional[str]):
-            Directory containing label TIFF files.
         output_path (str):
             Path to save the output OME-Zarr file.
         channel_map (Dict[str, str]):
             Mapping from filename codes to channel names.
         scaling_values (Union[List[int], Tuple[int]]):
             Scaling values for the images.
+        label_dir (Optional[str]):
+            Directory containing label TIFF files. Defaults to None.
         ignore (Optional[List[str]]):
             List of filename codes to ignore.
             Defaults to ["Merge"], which is a
@@ -233,10 +233,10 @@ def tiff_to_zarr(  # noqa: PLR0913
 
 def tiff_to_ometiff(  # noqa: PLR0913
     image_dir: str,
-    label_dir: Optional[str],
     output_path: str,
     channel_map: Dict[str, str],
     scaling_values: Union[List[int], Tuple[int]],
+    label_dir: Optional[str] = None,
     ignore: Optional[List[str]] = ["Merge"],
 ) -> str:
     """
@@ -245,14 +245,14 @@ def tiff_to_ometiff(  # noqa: PLR0913
     Args:
         image_dir (str):
             Directory containing TIFF image files.
-        label_dir (Optional[str]):
-            Directory containing label TIFF files.
         output_path (str):
             Path to save the output OME-TIFF file.
         channel_map (Dict[str, str]):
             Mapping from filename codes to channel names.
         scaling_values (Union[List[int], Tuple[int]]):
             Scaling values for the images.
+        label_dir (Optional[str]):
+            Directory containing label TIFF files. Defaults to None.
         ignore (Optional[List[str]]):
             List of filename codes to ignore.
             Defaults to ["Merge"], which is a
