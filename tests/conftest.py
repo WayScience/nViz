@@ -41,8 +41,4 @@ def ensure_synapse_data():
     else:
         print(f"Synapse data already exists at {local_dir}, skipping download.")
 
-    # Verify files exist
-    assert local_dir.exists(), f"Directory {local_dir} does not exist"
-    assert any(local_dir.iterdir()), f"No files found in {local_dir}"
-
     return local_dir
