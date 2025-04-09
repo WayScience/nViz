@@ -3,9 +3,11 @@ conftest.py for pytest fixtures and related
 """
 
 import os
+import pathlib
+
 import pytest
 import synapseclient
-import pathlib
+
 from tests.utils import download_synapse_folder
 
 
