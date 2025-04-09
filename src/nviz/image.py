@@ -53,7 +53,7 @@ def image_set_to_arrays(
     # build a reference to the observations
     zstack_arrays = {
         "images": {
-            channel_map.get(filename_code, f"Unknown_{filename_code}"): np.stack(
+            channel_map.get(filename_code, filename_code): np.stack(
                 [
                     tiff.imread(tiff_file.path).astype(np.uint16)
                     for tiff_file in sorted(
