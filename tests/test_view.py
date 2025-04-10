@@ -119,11 +119,6 @@ def test_view_zarr_with_napari_and_real_data(
     Tests the view_zarr_with_napari function.
     """
 
-    # Verify files exist
-    assert pathlib.Path(image_dir).exists(), f"Directory {image_dir} does not exist"
-    assert any(pathlib.Path(image_dir).iterdir()), f"No files found in {image_dir}"
-    print([str(file) for file in list(pathlib.Path(image_dir).iterdir())])
-
     zarr_dir = tiff_to_zarr(
         image_dir=image_dir,
         label_dir=label_dir,
@@ -164,11 +159,6 @@ def test_view_ometiff_with_napari_and_real_data(
     """
     Tests the view_ometiff_with_napari function.
     """
-
-    # Verify files exist
-    assert pathlib.Path(image_dir).exists(), f"Directory {image_dir} does not exist"
-    assert any(pathlib.Path(image_dir).iterdir()), f"No files found in {image_dir}"
-    print([str(file) for file in list(pathlib.Path(image_dir).iterdir())])
 
     ometiff_path = tiff_to_ometiff(
         image_dir=image_dir,
