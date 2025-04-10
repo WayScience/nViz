@@ -38,7 +38,7 @@ def ensure_synapse_data():
         # Initialize Synapse client and log in
         syn = synapseclient.Synapse()
         syn.login(
-            authToken=os.environ.get["SYNAPSE_AUTH_TOKEN"]
+            authToken=os.environ.get("SYNAPSE_AUTH_TOKEN")
         )  # Requires valid token
 
         # Download the Synapse folder
