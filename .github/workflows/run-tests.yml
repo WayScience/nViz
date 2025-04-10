@@ -7,10 +7,14 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  pull_request_target:
+    branches: [main]
 
 jobs:
   pre_commit_checks:
     runs-on: ubuntu-22.04
+    env:
+      SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
     steps:
       # checks out the repo
       - uses: actions/checkout@v4
@@ -37,6 +41,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       OS: ${{ matrix.os }}
+      SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
