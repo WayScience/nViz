@@ -21,6 +21,10 @@ def ensure_synapse_data():
         pathlib.Path:
             The local directory where the Synapse data is stored.
     """
+
+    # check that we have a 
+    assert os.environ.get("SYNAPSE_AUTH_TOKEN"), "SYNAPSE_AUTH_TOKEN is not set in the environment"
+
     # Synapse folder ID and local directory
     folder_id = "syn65987279"  # Replace with the actual Synapse folder ID
     local_dir = pathlib.Path("tests/data/synapse/download/C10-1")
@@ -31,7 +35,7 @@ def ensure_synapse_data():
 
         # Initialize Synapse client and log in
         syn = synapseclient.Synapse()
-        syn.login(authToken=os.environ["SYNAPSE_AUTH_TOKEN"])  # Requires valid token
+        syn.login(authToken=os.environ.get["SYNAPSE_AUTH_TOKEN"])  # Requires valid token
 
         # Download the Synapse folder
         download_synapse_folder(
