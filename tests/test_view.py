@@ -73,7 +73,7 @@ def test_view_ometiff_with_napari_and_example_data(
     tmp_path: pathlib.Path,
 ):
     """
-    Tests the view_ometiff_with_napari function.
+    Tests the view_ometiff_with_napari_and_example_data function.
     """
 
     ometiff_path = tiff_to_ometiff(
@@ -116,7 +116,7 @@ def test_view_zarr_with_napari_and_real_data(
     ensure_synapse_data: pathlib.Path,
 ):
     """
-    Tests the view_zarr_with_napari function.
+    Tests the view_zarr_with_napari_and_real_data function.
     """
 
     zarr_dir = tiff_to_zarr(

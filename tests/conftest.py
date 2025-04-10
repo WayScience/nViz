@@ -28,7 +28,7 @@ def ensure_synapse_data():
     )
 
     # Synapse folder ID and local directory
-    folder_id = "syn65987279"  # Replace with the actual Synapse folder ID
+    folder_id = "syn65987279"
     local_dir = pathlib.Path("tests/data/synapse/download/C10-1")
 
     # Check if the directory already exists and contains files

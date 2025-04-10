@@ -57,7 +57,7 @@ You can run pytest on your work using the following example:
 Synapse requires non-anonymous credentials to download data from the platform.
 `nViz` uses Synapse to retrieve data for testing through a [Synapse Personal Access Token](https://help.synapse.org/docs/Managing-Your-Account.2055405596.html#ManagingYourAccount-PersonalAccessTokens).
 You may set this token for use with `nViz` tests via `export SYNAPSE_AUTH_TOKEN=token_content_goes_here`.
-If this environment variable is not set the related tests will be skipped.
+If you do not set the environment variable, then the synapse-related tests will be skipped.
 
 ## Making changes to this repository
 
