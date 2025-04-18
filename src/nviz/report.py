@@ -2,30 +2,29 @@
 Module to analyze local file paths and return structured information.
 """
 
-import os
-from typing import Dict, List, Union, Optional
 import pathlib
 from collections import Counter
 from difflib import SequenceMatcher
+from typing import Dict, List, Optional, Union
 
 paths_type = Dict[str, Union[str, bool, int, float, None]]
 
 
 def get_path_info(base_path: str, ignore: Optional[List[str]] = None) -> paths_type:
     """
-    Takes a local path and returns a data structure with 
+    Takes a local path and returns a data structure with
     details about the path.
 
     Args:
         base_path (str):
             The local path to analyze.
         ignore (Optional[List[str]]):
-            A list of patterns to ignore 
+            A list of patterns to ignore
             (e.g., hidden files, specific file types).
 
     Returns:
         paths_type:
-            A dictionary containing the filepath, 
+            A dictionary containing the filepath,
             filename, type (file/dir), extension (if file),
             hidden status, and filesize.
     """
@@ -61,12 +60,12 @@ def find_empty_directories(paths: paths_type) -> paths_type:
     from the given base path.
 
     Args:
-        paths (paths_type): 
+        paths (paths_type):
             The base path to start searching
             for empty directories.
 
     Returns:
-        list: 
+        list:
             A list of paths to empty directories.
     """
 
@@ -109,7 +108,7 @@ def find_similar_directories(
 
     Args:
         paths (paths_type):
-            The paths data structure containing 
+            The paths data structure containing
             file and directory information.
         similarity_threshold (float):
             The threshold above which two
@@ -117,7 +116,7 @@ def find_similar_directories(
 
     Returns:
         List[tuple]:
-            A list of tuples containing pairs of 
+            A list of tuples containing pairs of
             similar directory names.
     """
 
@@ -140,17 +139,17 @@ def path_report(
     Generates a report of the local file paths.
 
     Args:
-        base_path (str): 
+        base_path (str):
             The base path to analyze.
         ignore (Optional[List[str]]):
             A list of patterns to ignore which is sent to
-            the get_path_info function. (e.g., 
+            the get_path_info function. (e.g.,
             hidden files, specific file types).
         print_report (bool):
             Whether to print the report to the screen.
 
     Returns:
-        dict: 
+        dict:
             A dictionary containing the
             path information and empty directories.
     """

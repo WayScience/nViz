@@ -2,14 +2,16 @@
 Tests for the report module
 """
 
-import pytest
 import pathlib
 from typing import Dict, Union
+
+import pytest
+
 from nviz.report import (
-    get_path_info,
-    find_empty_directories,
     count_file_extensions,
+    find_empty_directories,
     find_similar_directories,
+    get_path_info,
     path_report,
 )
 
@@ -51,11 +53,9 @@ def test_find_empty_directories(paths: paths_type):
     for dir_path in empty_dirs:
         assert pathlib.Path(dir_path).is_dir()
         assert not any(
-            [
-                path
-                for path in pathlib.Path(dir_path).iterdir()
-                if not str(path).endswith(".gitkeep")
-            ]
+            path
+            for path in pathlib.Path(dir_path).iterdir()
+            if not str(path).endswith(".gitkeep")
         )
 
 
@@ -88,14 +88,18 @@ def test_find_similar_directories(paths: paths_type, similarity_threshold: float
         assert dir1 != dir2
 
 
-@pytest.mark.parametrize("base_path", ["tests/bogus/directory", "tests/data/file_and_folder_issues"])
+@pytest.mark.parametrize(
+    "base_path", ["tests/bogus/directory", "tests/data/file_and_folder_issues"]
+)
 def test_path_report(base_path: str):
     """
     Test the path_report function.
     """
 
     try:
-        report = path_report(base_path=base_path, ignore=[".gitkeep"], print_report=True)
+        report = path_report(
+            base_path=base_path, ignore=[".gitkeep"], print_report=True
+        )
         assert isinstance(report, dict)
         assert "file_extensions" in report
         assert "empty_directories" in report
