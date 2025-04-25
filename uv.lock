@@ -2078,7 +2078,7 @@ wheels = [
 
 [[package]]
 name = "nviz"
-version = "0.0.post1.dev8"
+version = "0.0.post1.dev21"
 source = { editable = "." }
 dependencies = [
     { name = "napari", extra = ["all"] },
@@ -2136,7 +2136,7 @@ dev = [
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "setuptools-scm", specifier = ">=8.1" },
     { name = "sphinx", specifier = ">=8.1.3" },
-    { name = "synapseclient", specifier = ">=4.7.0" },
+    { name = "synapseclient", specifier = ">=4.7" },
 ]
 
 [[package]]
