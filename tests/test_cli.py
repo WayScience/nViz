@@ -3,6 +3,7 @@ Tests CLI capabilities for nviz
 """
 
 import pytest
+
 from tests.utils import run_cli_command
 
 
@@ -65,6 +66,7 @@ def test_cli_tiff_to_zarr(
     # This isn't a typical usecase because we can't use the viewer
     # object through a CLI interface (we only enable it for testing).
     assert stdout.strip() == "napari.Viewer: napari"
+
 
 @pytest.mark.parametrize(
     "image_dir, output_path, channel_map, scaling_values, label_dir, ignore",
