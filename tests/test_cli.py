@@ -2,6 +2,9 @@
 Tests CLI capabilities for nviz
 """
 
+import pathlib
+from typing import Dict, List, Optional, Tuple, Union
+
 import pytest
 
 from tests.utils import run_cli_command
@@ -13,8 +16,6 @@ def test_cli_util():
     """
 
     _, _, returncode = run_cli_command(["echo", "'hello world'"])
-
-    assert returncode == 0
 
     assert returncode == 0
 
@@ -36,7 +37,13 @@ def test_cli_util():
     ],
 )
 def test_cli_tiff_to_zarr(
-    tmp_path, image_dir, output_path, channel_map, scaling_values, label_dir, ignore
+    tmp_path: pathlib.Path,
+    image_dir: str,
+    output_path: str,
+    channel_map: Dict[str, str],
+    scaling_values: Union[List[int], Tuple[int]],
+    label_dir: Optional[str],
+    ignore: Optional[List[str]],
 ):
     """
     Test CLI use of tiff to zarr and viewing capabilities
@@ -85,7 +92,13 @@ def test_cli_tiff_to_zarr(
     ],
 )
 def test_cli_tiff_to_ometiff(
-    tmp_path, image_dir, output_path, channel_map, scaling_values, label_dir, ignore
+    tmp_path: pathlib.Path,
+    image_dir: str,
+    output_path: str,
+    channel_map: Dict[str, str],
+    scaling_values: Union[List[int], Tuple[int]],
+    label_dir: Optional[str],
+    ignore: Optional[List[str]],
 ):
     """
     Test CLI use of tiff to ome-tiff and viewing capabilities

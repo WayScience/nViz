@@ -1,5 +1,5 @@
 """
-CLI for onesentence
+CLI for nviz
 """
 
 from typing import Dict, List, Optional, Tuple, Union
@@ -11,7 +11,7 @@ from nviz.view import view_ometiff_with_napari, view_zarr_with_napari
 
 
 class nVizCLI:
-    def tiff_to_zarr(
+    def tiff_to_zarr(  # noqa: PLR0913
         self,
         image_dir: str,
         output_path: str,
@@ -52,7 +52,7 @@ class nVizCLI:
             ignore=ignore,
         )
 
-    def tiff_to_ometiff(
+    def tiff_to_ometiff(  # noqa: PLR0913
         self,
         image_dir: str,
         output_path: str,
@@ -154,7 +154,7 @@ class nVizCLI:
         )
 
 
-def trigger():
+def trigger() -> None:
     """
     Trigger the CLI to run.
     """
