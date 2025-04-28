@@ -91,9 +91,11 @@ pythonpath = [ "." ]
 # omit testing utils for code coverage
 run.omit = [
   "tests/utils.py",
+  "tests/conftest.py",
 ]
 report.omit = [
   "tests/utils.py",
+  "tests/conftest.py",
 ]
 
 [tool.jupytext]
