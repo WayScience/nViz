@@ -3,8 +3,10 @@ Utilities for testing.
 """
 
 import os
+import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from typing import Tuple
 
 import pytest
 import synapseclient
@@ -161,3 +163,18 @@ def download_synapse_folder(
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             for file_name, file_id in files:
                 executor.submit(download_file, syn, file_id, target_dir, file_name)
+
+
+def run_cli_command(command: str) -> Tuple[str, str, int]:
+    """
+    Run a CLI command using subprocess and capture the output and return code.
+
+    Args:
+        command (list): The command to run as a list of strings.
+
+    Returns:
+        tuple: (str: stdout, str: stderr, int: returncode)
+    """
+
+    result = subprocess.run(args=command, capture_output=True, text=True, check=False)
+    return result.stdout, result.stderr, result.returncode

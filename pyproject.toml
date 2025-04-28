@@ -15,6 +15,7 @@ classifiers = [
 ]
 dynamic = [ "version" ]
 dependencies = [
+  "fire>=0.7",
   "napari[all]>=0.5.5",
   "napari-ome-zarr>=0.6.1",
   "numpy<2.3",
@@ -23,6 +24,7 @@ dependencies = [
   "xmltodict>=0.14.2",
   "zarr>=2.18.4",
 ]
+scripts.nviz = "nviz.cli:trigger"
 
 [dependency-groups]
 # dependency groups for uv
@@ -84,6 +86,17 @@ lint.per-file-ignores."tests/*" = [ "ANN201", "PLR0913", "PLR2004" ]
 
 [tool.pytest.ini_options]
 pythonpath = [ "." ]
+
+[tool.coverage]
+# omit testing utils for code coverage
+run.omit = [
+  "tests/utils.py",
+  "tests/conftest.py",
+]
+report.omit = [
+  "tests/utils.py",
+  "tests/conftest.py",
+]
 
 [tool.jupytext]
 formats = "ipynb,py:light"
