@@ -36,17 +36,17 @@ apt-get install -y \
 
 # Set up the display
 export DISPLAY=:99.0
-        echo "DISPLAY=:99.0" >> $GITHUB_ENV
-        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-        sleep 3
+Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+sleep 3
 
 # Start the window manager
 herbstluftwm &
-        sleep 3
+sleep 3
 
 # install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
-source $HOME/.local/bin/env
+# shellcheck disable=SC1091
+source "$HOME/.local/bin/env"
 
 # install pre-commit
 pip install pre-commit
