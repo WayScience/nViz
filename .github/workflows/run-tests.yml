@@ -27,7 +27,7 @@ jobs:
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v6
       - name: Display configuration for Ubuntu
-        uses: pyvista/setup-headless-display-action@v3
+        uses: pyvista/setup-headless-display-action@v4
         with:
           qt: true
       - uses: pre-commit/action@v3.0.1
@@ -55,7 +55,7 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: Display configuration for Ubuntu
         if: ${{ matrix.os == 'ubuntu-22.04' }}
-        uses: pyvista/setup-headless-display-action@v3
+        uses: pyvista/setup-headless-display-action@v4
         with:
           qt: true
       - name: Install the latest version of uv
