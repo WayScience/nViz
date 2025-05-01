@@ -10,6 +10,9 @@ on:
 
 jobs:
   pre_commit_checks:
+    # use macos to run pre-commit checks to avoid
+    # challenges with linux headless display and
+    # code coverage related to printed stdout.
     runs-on: macos-14
     env:
       SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
