@@ -10,7 +10,7 @@ on:
 
 jobs:
   pre_commit_checks:
-    runs-on: ubuntu-22.04
+    runs-on: macos-14
     env:
       SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
     steps:
