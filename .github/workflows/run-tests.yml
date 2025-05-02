@@ -10,6 +10,9 @@ on:
 
 jobs:
   pre_commit_checks:
+    # use macos to run pre-commit checks to avoid
+    # challenges with linux headless display and
+    # code coverage related to printed stdout.
     runs-on: macos-14
     env:
       SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
@@ -25,9 +28,9 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
       - name: Display configuration for Ubuntu
-        uses: pyvista/setup-headless-display-action@v3
+        uses: pyvista/setup-headless-display-action@v4
         with:
           qt: true
       - uses: pre-commit/action@v3.0.1
@@ -55,10 +58,10 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: Display configuration for Ubuntu
         if: ${{ matrix.os == 'ubuntu-22.04' }}
-        uses: pyvista/setup-headless-display-action@v3
+        uses: pyvista/setup-headless-display-action@v4
         with:
           qt: true
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
       - name: Run pytest
         run: uv run --frozen pytest
