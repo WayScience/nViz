@@ -66,19 +66,3 @@ repos:
     rev: 'v2.14'
     hooks:
     -   id: vulture
--   repo: local
-    hooks:
-    -   id: code-cov-gen
-        name: Generate code coverage
-        language: system
-        # freeze the environment so it does not update
-        # and only runs tests for coverage analysis
-        entry: uv run --frozen coverage run -m pytest
-        pass_filenames: false
-        always_run: true
--   repo: https://github.com/Weird-Sheep-Labs/coverage-pre-commit
-    rev: 0.1.1
-    hooks:
-    -   id: coverage-xml
-    -   id: coverage-badge
-        args: ["-o", "docs/src/_static/coverage-badge.svg"]
