@@ -4,7 +4,7 @@ name: tests
 
 on:
   push:
-    branches: [main]
+    branches: [main, path-reporter]
   pull_request_target:
     branches: [main]
 
