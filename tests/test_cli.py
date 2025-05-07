@@ -2,6 +2,7 @@
 Tests CLI capabilities for nviz
 """
 
+import json
 import pathlib
 from typing import Dict, List, Optional, Tuple, Union
 
@@ -128,3 +129,42 @@ def test_cli_tiff_to_ometiff(
     # This isn't a typical usecase because we can't use the viewer
     # object through a CLI interface (we only enable it for testing).
     assert stdout.strip() == "napari.Viewer: napari"
+
+
+@pytest.mark.parametrize(
+    "target_path", ["tests/bogus/directory", "tests/data/file_and_folder_issues"]
+)
+def test_cli_path_report(target_path: str):
+    """
+    Test CLI use of the path_report function.
+    """
+
+    stdout, stderr, returncode = run_cli_command(
+        [
+            "nviz",
+            "path_report",
+            target_path,
+            "['.gitkeep']",
+        ]
+    )
+
+    if pathlib.Path(target_path).exists():
+        assert returncode == 0
+        assert "nViz Path Report:" in stdout.strip()
+    else:
+        assert returncode == 1
+        assert "FileNotFoundError" in stderr.strip()
+
+    stdout, stderr, returncode = run_cli_command(
+        ["nviz", "path_report", target_path, "['.gitkeep']", "False"]
+    )
+
+    if pathlib.Path(target_path).exists():
+        path_report_data = json.loads(stdout.strip())
+        assert isinstance(path_report_data, dict)
+        assert "file_extensions" in path_report_data
+        assert "empty_directories" in path_report_data
+        assert "similarly_named_directories" in path_report_data
+    else:
+        assert returncode == 1
+        assert "FileNotFoundError" in stderr.strip()

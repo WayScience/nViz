@@ -156,14 +156,17 @@ def path_report(
 
     paths = get_path_info(base_path=base_path, ignore=ignore)
 
+    empty_dirs = find_empty_directories(paths=paths)
+    similar_dirs = find_similar_directories(paths=paths)
+
     report = {
         "file_extensions": count_file_extensions(paths=paths),
-        "empty_directories": find_empty_directories(paths=paths),
-        "similarly_named_directories": find_similar_directories(paths=paths),
+        "empty_directories": empty_dirs if empty_dirs else [None],
+        "similarly_named_directories": similar_dirs if similar_dirs else [None],
     }
 
     if print_report:
-        print("nViz Path Report:")
+        print("\nnViz Path Report:\n--------------------")
         print("File Extensions:")
         for ext, count in report["file_extensions"].items():
             print(f"  {ext}: {count}")
