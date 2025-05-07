@@ -132,9 +132,9 @@ def test_cli_tiff_to_ometiff(
 
 
 @pytest.mark.parametrize(
-    "target_path", ["tests/bogus/directory", "tests/data/file_and_folder_issues"]
+    "target_path, return_code", [("tests/bogus/directory", 1), ("tests/data/file_and_folder_issues", 1), ("tests/data/file_and_folder_issues/A11", 0)]
 )
-def test_cli_path_report(target_path: str):
+def test_cli_path_report(target_path: str, return_code: int):
     """
     Test CLI use of the path_report function.
     """
@@ -149,10 +149,10 @@ def test_cli_path_report(target_path: str):
     )
 
     if pathlib.Path(target_path).exists():
-        assert returncode == 0
+        assert returncode == return_code
         assert "nViz Path Report:" in stdout.strip()
     else:
-        assert returncode == 1
+        assert returncode == return_code
         assert "FileNotFoundError" in stderr.strip()
 
     stdout, stderr, returncode = run_cli_command(
@@ -161,10 +161,11 @@ def test_cli_path_report(target_path: str):
 
     if pathlib.Path(target_path).exists():
         path_report_data = json.loads(stdout.strip())
+        assert returncode == return_code
         assert isinstance(path_report_data, dict)
         assert "file_extensions" in path_report_data
         assert "empty_directories" in path_report_data
         assert "similarly_named_directories" in path_report_data
     else:
-        assert returncode == 1
+        assert returncode == return_code
         assert "FileNotFoundError" in stderr.strip()
