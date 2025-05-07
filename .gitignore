@@ -177,3 +177,5 @@ src/raw_organoid_images_to_omezarr/data/GFF-data
 *.tif
 _version.py
 *.png
+tests/data/synapse/*
+!tests/data/synapse/.gitkeep
