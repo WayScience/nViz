@@ -2,11 +2,14 @@
 CLI for nviz
 """
 
+import json
+import sys
 from typing import Dict, List, Optional, Tuple, Union
 
 import fire
 
 from nviz.image import tiff_to_ometiff, tiff_to_zarr
+from nviz.report import path_report
 from nviz.view import view_ometiff_with_napari, view_zarr_with_napari
 
 
@@ -152,6 +155,54 @@ class nVizCLI:
         return view_ometiff_with_napari(
             ometiff_path=ometiff_path, scaling_values=scaling_values, headless=headless
         )
+
+    def path_report(
+        self,
+        base_path: str,
+        ignore: Optional[List[str]] = None,
+        print_report: bool = True,
+    ) -> Dict[str, Union[Dict[str, int], List[str], List[tuple]]]:
+        """
+        CLI interface for generating a report of the local file paths.
+
+        Args:
+            base_path (str):
+                The base path to analyze.
+            ignore (Optional[List[str]]):
+                A list of patterns to ignore which is sent to
+                the get_path_info function. (e.g.,
+                hidden files, specific file types).
+            print_report (bool):
+                Whether to print the report to the screen
+                in a human-readable format. If we don't
+                print the report we instead return the
+                JSON dump of the report.
+                Defaults to True.
+
+        Returns:
+            dict:
+                A dictionary containing the
+                path information and empty directories.
+        """
+
+        # gather the report
+        report = path_report(
+            base_path=base_path, ignore=ignore, print_report=print_report
+        )
+
+        if not print_report:
+            # if we're not printing the report, dump the json to the output
+            return print(json.dumps(report))
+
+        if (
+            len(report["empty_directories"]) > 1
+            or len(report["similarly_named_directories"]) > 1
+        ):
+            # if we find errors in the report, we want to exit with a non-zero code
+            sys.exit(1)
+        else:
+            # otherwise, we can exit with a zero code
+            sys.exit(0)
 
 
 def trigger() -> None:
