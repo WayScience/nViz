@@ -192,17 +192,20 @@ class nVizCLI:
 
         if not print_report:
             # if we're not printing the report, dump the json to the output
-            return print(json.dumps(report))
+            print(json.dumps(report))
 
         if (
-            len(report["empty_directories"]) > 1
-            or len(report["similarly_named_directories"]) > 1
+            len(report["empty_directories"]) >= 1
+            and None not in report["empty_directories"]
+        ) or (
+            len(report["similarly_named_directories"]) >= 1
+            and None not in report["similarly_named_directories"]
         ):
             # if we find errors in the report, we want to exit with a non-zero code
             sys.exit(1)
-        else:
-            # otherwise, we can exit with a zero code
-            sys.exit(0)
+
+        # otherwise, we can exit with a zero code
+        sys.exit(0)
 
 
 def trigger() -> None:

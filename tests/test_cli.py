@@ -132,7 +132,12 @@ def test_cli_tiff_to_ometiff(
 
 
 @pytest.mark.parametrize(
-    "target_path, return_code", [("tests/bogus/directory", 1), ("tests/data/file_and_folder_issues", 1), ("tests/data/file_and_folder_issues/A11", 0)]
+    "target_path, return_code",
+    [
+        ("tests/bogus/directory", 1),
+        ("tests/data/file_and_folder_issues", 1),
+        ("tests/data/file_and_folder_issues/A11", 0),
+    ],
 )
 def test_cli_path_report(target_path: str, return_code: int):
     """

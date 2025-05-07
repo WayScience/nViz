@@ -174,7 +174,10 @@ def path_report(
         for directory in report["empty_directories"]:
             print(f"  {directory}")
         print("\nSimilarly Named Directories:")
-        for dir1, dir2 in report["similarly_named_directories"]:
-            print(f"  {dir1} <-> {dir2}")
+        if report["similarly_named_directories"] == [None]:
+            print("  None")
+        else:
+            for dir1, dir2 in report["similarly_named_directories"]:
+                print(f"  {dir1} <-> {dir2}")
 
     return report
