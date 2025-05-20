@@ -3,6 +3,7 @@
 [![Build Status](https://github.com/WayScience/nViz/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/WayScience/nViz/actions/workflows/run-tests.yml?query=branch%3Amain)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+![Coverage Status](https://raw.githubusercontent.com/WayScience/nViz/main/docs/src/_static/coverage-badge.svg)
 
 This project focuses on ingesting a set of [TIFF](https://en.wikipedia.org/wiki/TIFF) images as [OME-Zarr](https://pmc.ncbi.nlm.nih.gov/articles/PMC9980008/) or [OME-TIFF](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2005-6-5-r47).
 Each input image set[<sup>1</sup>](#image_set_ref) are organized by channel and z-slices which form four dimensional (4D) microscopy data.
