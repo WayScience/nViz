@@ -18,7 +18,7 @@ dependencies = [
   "fire>=0.7",
   "napari[all]>=0.5.5",
   "napari-ome-zarr>=0.6.1",
-  "numpy<2.3",
+  "numpy<2.4",
   "ome-zarr>=0.10.2",
   "tifffile>=2024.12.12",
   "xmltodict>=0.14.2",
