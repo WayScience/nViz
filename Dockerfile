@@ -1,43 +1,30 @@
-# referenced with modifications from
-# https://github.com/napari/napari/blob/main/dockerfile
-FROM --platform=linux/amd64 python:3.11 AS napari
+ARG PLATFORM=linux/amd64
+FROM --platform=${PLATFORM} ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
-# below env var required to install libglib2.0-0 non-interactively
-ENV TZ=America/Los_Angeles
-ARG DEBIAN_FRONTEND=noninteractive
-ARG NAPARI_COMMIT=main
+ENV DEBIAN_FRONTEND=noninteractive
 
-WORKDIR /nviz
+# Install headless‐display, OpenGL bits, git, and fontconfig for VisPy
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      xvfb \
+      libgl1-mesa-glx \
+      libgl1-mesa-dri \
+      libosmesa6-dev \
+      libxrender1 \
+      libxext6 \
+      fontconfig \
+      git \
+ && rm -rf /var/lib/apt/lists/*
 
-# install python resources + graphical libraries used by qt and vispy
-RUN apt-get update && \
-    apt-get install -qqy  \
-        build-essential \
-        git \
-        mesa-utils \
-        x11-utils \
-        libegl1-mesa \
-        libopengl0 \
-        libgl1-mesa-glx \
-        libglib2.0-0 \
-        libfontconfig1 \
-        libxrender1 \
-        libdbus-1-3 \
-        libxkbcommon-x11-0 \
-        libxi6 \
-        libxcb-icccm4 \
-        libxcb-image0 \
-        libxcb-keysyms1 \
-        libxcb-randr0 \
-        libxcb-render-util0 \
-        libxcb-xinerama0 \
-        libxcb-xinput0 \
-        libxcb-xfixes0 \
-        libxcb-shape0 \
-        && apt-get clean
+# non‑root user
+RUN useradd --create-home appuser
+USER appuser
+WORKDIR /home/appuser
 
-# install napari from repo
-# see https://github.com/pypa/pip/issues/6548#issuecomment-498615461 for syntax
-RUN pip install --upgrade pip
+# mount point for your code
+RUN mkdir -p /home/appuser/app
+VOLUME ["/home/appuser/app"]
 
-ENTRYPOINT ["/bin/bash"]
+# on start, fire up Xvfb then exec your CMD (or bash)
+ENTRYPOINT ["sh","-c","Xvfb :99 -screen 0 1024x768x24 & export DISPLAY=:99 && exec \"${@:-bash}\"","--"]
+CMD []
