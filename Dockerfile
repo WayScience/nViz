@@ -1,5 +1,5 @@
 ARG PLATFORM=linux/amd64
-FROM --platform=${PLATFORM} ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+FROM --platform=${PLATFORM} ghcr.io/astral-sh/uv:python3.11-bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
