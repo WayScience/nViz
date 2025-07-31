@@ -110,7 +110,10 @@ ignore_names = [ "ensure_synapse_data" ]
 # Create a local docker image and run it
 # with this directory mapped to /nviz
 # for development within linux environments.
-docker-run.shell = """
-docker build --platform linux/amd64 -t nviz:latest -f tests/Dockerfile .
+docker-build = """
+docker build --platform linux/amd64 -t nviz:latest -f Dockerfile .
+"""
+docker-run = """
 docker run --platform linux/amd64 -it --rm -v $PWD:/nviz nviz
 """
+docker = [ "docker-build", "docker-run" ]
