@@ -18,7 +18,7 @@ dependencies = [
   "fire>=0.7",
   "napari[all]>=0.5.5",
   "napari-ome-zarr>=0.6.1",
-  "numpy<2.3",
+  "numpy<2.4",
   "ome-zarr>=0.10.2",
   "tifffile>=2024.12.12",
   "xmltodict>=0.14.2",
@@ -90,12 +90,10 @@ pythonpath = [ "." ]
 [tool.coverage]
 # omit testing utils for code coverage
 run.omit = [
-  "tests/utils.py",
-  "tests/conftest.py",
+  "tests/*",
 ]
 report.omit = [
-  "tests/utils.py",
-  "tests/conftest.py",
+  "tests/*",
 ]
 
 [tool.jupytext]
@@ -112,7 +110,10 @@ ignore_names = [ "ensure_synapse_data" ]
 # Create a local docker image and run it
 # with this directory mapped to /nviz
 # for development within linux environments.
-docker-run.shell = """
-docker build --platform linux/amd64 -t nviz:latest -f tests/Dockerfile .
+docker-build = """
+docker build --platform linux/amd64 -t nviz:latest -f Dockerfile .
+"""
+docker-run = """
 docker run --platform linux/amd64 -it --rm -v $PWD:/nviz nviz
 """
+docker = [ "docker-build", "docker-run" ]
