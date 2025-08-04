@@ -51,6 +51,14 @@ You can run pytest on your work using the following example:
 % uv run pytest
 ```
 
+#### Tests which use Sage Bionetworks Synapse
+
+[Sage Bionetworks Synapse](https://sagebionetworks.org/platform/synapse) is a suite of web services that enables researchers to aggregate, organize, analyze and share their scientific data, code and insights.
+Synapse requires non-anonymous credentials to download data from the platform.
+`nViz` uses Synapse to retrieve data for testing through a [Synapse Personal Access Token](https://help.synapse.org/docs/Managing-Your-Account.2055405596.html#ManagingYourAccount-PersonalAccessTokens).
+You may set this token for use with `nViz` tests via `export SYNAPSE_AUTH_TOKEN=token_content_goes_here`.
+If you do not set the environment variable, then the synapse-related tests will be skipped.
+
 ## Making changes to this repository
 
 We welcome anyone to use [GitHub issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues) (requires a GitHub login) or create [pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) (to directly make changes within this repository) to modify content found within this repository.

@@ -31,6 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -145,6 +146,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Examples
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -247,6 +255,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="code_of_conduct.html">
     Code of Conduct
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Examples
   </a>
 </li>
 
@@ -393,6 +408,14 @@ We recommend testing your work before opening pull requests with proposed change
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>%<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>pytest
 </pre></div>
 </div>
+<section id="tests-which-use-sage-bionetworks-synapse">
+<h4>Tests which use Sage Bionetworks Synapse<a class="headerlink" href="#tests-which-use-sage-bionetworks-synapse" title="Link to this heading">#</a></h4>
+<p><a class="reference external" href="https://sagebionetworks.org/platform/synapse">Sage Bionetworks Synapse</a> is a suite of web services that enables researchers to aggregate, organize, analyze and share their scientific data, code and insights.
+Synapse requires non-anonymous credentials to download data from the platform.
+<code class="docutils literal notranslate"><span class="pre">nViz</span></code> uses Synapse to retrieve data for testing through a <a class="reference external" href="https://help.synapse.org/docs/Managing-Your-Account.2055405596.html#ManagingYourAccount-PersonalAccessTokens">Synapse Personal Access Token</a>.
+You may set this token for use with <code class="docutils literal notranslate"><span class="pre">nViz</span></code> tests via <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">SYNAPSE_AUTH_TOKEN=token_content_goes_here</span></code>.
+If you do not set the environment variable, then the synapse-related tests will be skipped.</p>
+</section>
 </section>
 </section>
 <section id="making-changes-to-this-repository">

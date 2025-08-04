@@ -30,6 +30,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -142,6 +143,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../examples.html">
+    Examples
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -246,6 +254,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../code_of_conduct.html">
     Code of Conduct
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../examples.html">
+    Examples
   </a>
 </li>
 
@@ -365,8 +380,8 @@
 <a class="viewcode-back" href="../../../python-api.html#src.nviz.image.image_set_to_arrays">[docs]</a>
 <span class="k">def</span> <span class="nf">image_set_to_arrays</span><span class="p">(</span>
     <span class="n">image_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">label_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">channel_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">label_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Merge&quot;</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -382,12 +397,14 @@
 <span class="sd">    Args:</span>
 <span class="sd">        image_dir (str):</span>
 <span class="sd">            Directory containing TIFF image files.</span>
-<span class="sd">        label_dir (Optional[str]):</span>
-<span class="sd">            Directory containing label TIFF files.</span>
 <span class="sd">        channel_map (Dict[str, str]):</span>
 <span class="sd">            Mapping from filename codes to channel names.</span>
+<span class="sd">        label_dir (Optional[str]):</span>
+<span class="sd">            Directory containing label TIFF files. Defaults to None.</span>
 <span class="sd">        ignore (Optional[List[str]]):</span>
 <span class="sd">            List of filename codes to ignore.</span>
+<span class="sd">            Defaults to [&quot;Merge&quot;], which is a</span>
+<span class="sd">            code for merged images.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Dict[str, Dict[str, np.ndarray]]:</span>
@@ -398,7 +415,7 @@
     <span class="c1"># build a reference to the observations</span>
     <span class="n">zstack_arrays</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;images&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="n">channel_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename_code</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unknown_</span><span class="si">{</span><span class="n">filename_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+            <span class="n">channel_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename_code</span><span class="p">,</span> <span class="n">filename_code</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
                 <span class="p">[</span>
                     <span class="n">tiff</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">tiff_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">tiff_file</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
@@ -457,11 +474,11 @@
 <a class="viewcode-back" href="../../../python-api.html#src.nviz.image.tiff_to_zarr">[docs]</a>
 <span class="k">def</span> <span class="nf">tiff_to_zarr</span><span class="p">(</span>  <span class="c1"># noqa: PLR0913</span>
     <span class="n">image_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">label_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">channel_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">scaling_values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
-    <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">label_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Merge&quot;</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert TIFF files to OME-Zarr format.</span>
@@ -469,16 +486,18 @@
 <span class="sd">    Args:</span>
 <span class="sd">        image_dir (str):</span>
 <span class="sd">            Directory containing TIFF image files.</span>
-<span class="sd">        label_dir (Optional[str]):</span>
-<span class="sd">            Directory containing label TIFF files.</span>
 <span class="sd">        output_path (str):</span>
 <span class="sd">            Path to save the output OME-Zarr file.</span>
 <span class="sd">        channel_map (Dict[str, str]):</span>
 <span class="sd">            Mapping from filename codes to channel names.</span>
 <span class="sd">        scaling_values (Union[List[int], Tuple[int]]):</span>
 <span class="sd">            Scaling values for the images.</span>
+<span class="sd">        label_dir (Optional[str]):</span>
+<span class="sd">            Directory containing label TIFF files. Defaults to None.</span>
 <span class="sd">        ignore (Optional[List[str]]):</span>
 <span class="sd">            List of filename codes to ignore.</span>
+<span class="sd">            Defaults to [&quot;Merge&quot;], which is a</span>
+<span class="sd">            code for merged images.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str: Path to the output OME-Zarr file.</span>
@@ -582,11 +601,11 @@
 <a class="viewcode-back" href="../../../python-api.html#src.nviz.image.tiff_to_ometiff">[docs]</a>
 <span class="k">def</span> <span class="nf">tiff_to_ometiff</span><span class="p">(</span>  <span class="c1"># noqa: PLR0913</span>
     <span class="n">image_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">label_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">channel_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">scaling_values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
-    <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">label_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Merge&quot;</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert TIFF files to OME-TIFF format.</span>
@@ -594,16 +613,18 @@
 <span class="sd">    Args:</span>
 <span class="sd">        image_dir (str):</span>
 <span class="sd">            Directory containing TIFF image files.</span>
-<span class="sd">        label_dir (Optional[str]):</span>
-<span class="sd">            Directory containing label TIFF files.</span>
 <span class="sd">        output_path (str):</span>
 <span class="sd">            Path to save the output OME-TIFF file.</span>
 <span class="sd">        channel_map (Dict[str, str]):</span>
 <span class="sd">            Mapping from filename codes to channel names.</span>
 <span class="sd">        scaling_values (Union[List[int], Tuple[int]]):</span>
 <span class="sd">            Scaling values for the images.</span>
+<span class="sd">        label_dir (Optional[str]):</span>
+<span class="sd">            Directory containing label TIFF files. Defaults to None.</span>
 <span class="sd">        ignore (Optional[List[str]]):</span>
 <span class="sd">            List of filename codes to ignore.</span>
+<span class="sd">            Defaults to [&quot;Merge&quot;], which is a</span>
+<span class="sd">            code for merged images.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str: Path to the output OME-TIFF file.</span>
@@ -640,7 +661,7 @@
     <span class="k">if</span> <span class="n">label_dir</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">compartment_name</span><span class="p">,</span> <span class="n">stack</span> <span class="ow">in</span> <span class="n">frame_zstacks</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">labels_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span>
-            <span class="n">label_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">compartment_name</span><span class="si">}</span><span class="s2"> (labels)&quot;</span><span class="p">)</span>
+            <span class="n">label_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compartment_name</span><span class="p">)</span>
 
     <span class="c1"># Stack the images and labels along a new axis for channels</span>
     <span class="n">images_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">images_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>

@@ -31,6 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -144,6 +145,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Examples
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -251,6 +259,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Examples
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -321,11 +336,11 @@
 <section id="nviz">
 <h1>nViz<a class="headerlink" href="#nviz" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://github.com/WayScience/nViz/actions/workflows/run-tests.yml?query=branch%3Amain"><img alt="Build Status" src="https://github.com/WayScience/nViz/actions/workflows/run-tests.yml/badge.svg?branch=main" /></a>
-<img alt="Coverage Status" src="https://raw.githubusercontent.com/WayScience/nViz/main/docs/src/_static/coverage-badge.svg" />
 <a class="reference external" href="https://github.com/astral-sh/ruff"><img alt="Ruff" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" /></a>
-<a class="reference external" href="https://github.com/astral-sh/uv"><img alt="uv" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json" /></a></p>
+<a class="reference external" href="https://github.com/astral-sh/uv"><img alt="uv" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json" /></a>
+<img alt="Coverage Status" src="https://raw.githubusercontent.com/WayScience/nViz/main/docs/src/_static/coverage-badge.svg" /></p>
 <p>This project focuses on ingesting a set of <a class="reference external" href="https://en.wikipedia.org/wiki/TIFF">TIFF</a> images as <a class="reference external" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9980008/">OME-Zarr</a> or <a class="reference external" href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2005-6-5-r47">OME-TIFF</a>.
-Each input image set<a class="reference internal" href="#image_set_ref"><span class="xref myst">^1^</span></a> are organized by channel and z-slices which form four dimensional (4D) microscopy data.
+Each input image set<a class="reference internal" href="#image_set_ref"><span class="xref myst"><sup>1</sup></span></a> are organized by channel and z-slices which form four dimensional (4D) microscopy data.
 These 4D microscopy data contain information for biological objects (such as organoids).</p>
 <p>We read the output with <a class="reference external" href="https://napari.org/dev/index.html">Napari</a>, which provides a way to analyze and understand the 3D image data.</p>
 <blockquote>
@@ -343,6 +358,17 @@ pip<span class="w"> </span>install<span class="w"> </span>nviz
 pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/WayScience/nViz.git
 </pre></div>
 </div>
+<section id="installation-notes-for-linux">
+<h3>Installation notes for Linux<a class="headerlink" href="#installation-notes-for-linux" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">nViz</span></code> leverages Napari to help render visuals.
+Napari leverages <a class="reference external" href="https://riverbankcomputing.com/software/pyqt/intro">PyQT</a> to help build graphical components.
+PyQT has specific requirements based on the operating system which sometimes can cause errors within Napari, and as a result, also <code class="docutils literal notranslate"><span class="pre">nViz</span></code>.</p>
+<p>Below are some steps to try if you find that <code class="docutils literal notranslate"><span class="pre">nViz</span></code> visualizations through Napari are resulting in QT-related errors.</p>
+<ul class="simple">
+<li><p>Attempt to install <code class="docutils literal notranslate"><span class="pre">python3-pyqt5</span></code> through your system package manager (e.g. <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">install</span> <span class="pre">python3-pyqt5</span></code>).</p></li>
+<li><p>When using <code class="docutils literal notranslate"><span class="pre">nViz</span></code> within GitHub Actions Linux environments, consider using <a class="reference external" href="https://github.com/pyvista/setup-headless-display-action">pyvista/setup-headless-display-action</a> with <code class="docutils literal notranslate"><span class="pre">qt:</span> <span class="pre">true</span></code> in order to run without general exceptions.</p></li>
+</ul>
+</section>
 </section>
 <section id="contributing-development-and-testing">
 <h2>Contributing, Development, and Testing<a class="headerlink" href="#contributing-development-and-testing" title="Link to this heading">#</a></h2>
@@ -404,6 +430,10 @@ pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="code_of_conduct.html#attribution">Attribution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/nviz_quickstart.html">nViz Quickstart Guide</a></li>
 </ul>
 </li>
 </ul>
