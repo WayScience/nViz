@@ -29,9 +29,8 @@ jobs:
           ${{ github.event.pull_request.head.repo.full_name }}.git
       - name: Print Git metadata & remotes
         run: |
-          echo "Commit SHA:   $(git rev-parse HEAD)"
-          echo "Branch Name:  $(git rev-parse --abbrev-ref HEAD)"
-          echo "Tag:          $(git describe --tags --exact-match 2>/dev/null || echo 'none')"
+          echo "Commit SHA: $(git rev-parse HEAD)"
+          echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
           echo "Remotes:"
           git remote -v
       # run pre-commit
