@@ -37,6 +37,10 @@ keywords:
   - n-dimensional
   - way-lab
 license: BSD-3-Clause
+identifiers:
+  - description: Software DOI
+    type: doi
+    value: "10.5281/zenodo.15800367"
 references:
   - title: >-
       OME-Zarr: a cloud-optimized bioimaging file format with international community support
