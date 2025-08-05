@@ -27,6 +27,13 @@ jobs:
         run: >
           git remote add upstream https://github.com/
           ${{ github.event.pull_request.head.repo.full_name }}.git
+      - name: Print Git metadata & remotes
+        run: |
+          echo "Commit SHA:   $(git rev-parse HEAD)"
+          echo "Branch Name:  $(git rev-parse --abbrev-ref HEAD)"
+          echo "Tag:          $(git describe --tags --exact-match 2>/dev/null || echo 'none')"
+          echo "Remotes:"
+          git remote -v
       # run pre-commit
       - name: Python setup
         uses: actions/setup-python@v5
