@@ -15,14 +15,16 @@ classifiers = [
 ]
 dynamic = [ "version" ]
 dependencies = [
+  "fire>=0.7",
   "napari[all]>=0.5.5",
   "napari-ome-zarr>=0.6.1",
-  "numpy<2.3",
+  "numpy<2.4",
   "ome-zarr>=0.10.2",
   "tifffile>=2024.12.12",
   "xmltodict>=0.14.2",
   "zarr>=2.18.4",
 ]
+scripts.nviz = "nviz.cli:trigger"
 
 [dependency-groups]
 # dependency groups for uv
@@ -41,6 +43,7 @@ dev = [
   "pytest>=8.3.4",
   "setuptools-scm>=8.1",
   "sphinx>=8.1.3",
+  "synapseclient>=4.7",
 ]
 
 [tool.setuptools_scm]
@@ -84,18 +87,33 @@ lint.per-file-ignores."tests/*" = [ "ANN201", "PLR0913", "PLR2004" ]
 [tool.pytest.ini_options]
 pythonpath = [ "." ]
 
+[tool.coverage]
+# omit testing utils for code coverage
+run.omit = [
+  "tests/*",
+]
+report.omit = [
+  "tests/*",
+]
+
 [tool.jupytext]
 formats = "ipynb,py:light"
 
 [tool.vulture]
 min_confidence = 90
 paths = [ "src/nviz", "tests" ]
+# we ignore this name as it is a fixture which
+# used in tests which is often not directly used.
+ignore_names = [ "ensure_synapse_data" ]
 
 [tool.poe.tasks]
 # Create a local docker image and run it
 # with this directory mapped to /nviz
 # for development within linux environments.
-docker-run.shell = """
-docker build --platform linux/amd64 -t nviz:latest -f tests/Dockerfile .
+docker-build = """
+docker build --platform linux/amd64 -t nviz:latest -f Dockerfile .
+"""
+docker-run = """
 docker run --platform linux/amd64 -it --rm -v $PWD:/nviz nviz
 """
+docker = [ "docker-build", "docker-run" ]

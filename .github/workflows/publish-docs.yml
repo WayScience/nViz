@@ -24,7 +24,11 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
+      - name: Display configuration for Ubuntu
+        uses: pyvista/setup-headless-display-action@v4
+        with:
+          qt: true
       - name: Build documentation
         run: |
           mkdir pages

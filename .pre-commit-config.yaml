@@ -15,7 +15,7 @@ repos:
     -   id: check-yaml
     -   id: detect-private-key
 -   repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.5.0"
+    rev: "v2.6.0"
     hooks:
     -   id: pyproject-fmt
 -   repo: https://github.com/citation-file-format/cffconvert
@@ -40,12 +40,12 @@ repos:
         additional_dependencies:
         -   mdformat-gfm
 -   repo: https://github.com/adrienverge/yamllint
-    rev: v1.35.1
+    rev: v1.37.1
     hooks:
     -   id: yamllint
         exclude: pre-commit-config.yaml
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.9.4"
+    rev: "v0.12.7"
     hooks:
     -   id: ruff-format
     -   id: ruff
@@ -62,10 +62,6 @@ repos:
     rev: 'v2.14'
     hooks:
     -   id: vulture
--   repo: local
-    hooks:
-    -   id: code-cov-gen
-        name: Generate code coverage
         language: system
         # freeze the environment so it does not update
         # and only runs tests for coverage analysis
