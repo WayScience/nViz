@@ -34,14 +34,15 @@ jobs:
         with:
           qt: true
       - uses: pre-commit/action@v3.0.1
+        id: pre_commit
       # run pre-commit ci lite for automated fixes
       - uses: pre-commit-ci/lite-action@v1.1.0
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.pre_commit.outcome == 'failure' }}
   run_tests:
     strategy:
       matrix:
         python_version: ["3.11", "3.12"]
-        os: [ubuntu-22.04, macos-14]
+        os: [ubuntu-24.04, macos-14]
     runs-on: ${{ matrix.os }}
     env:
       OS: ${{ matrix.os }}
@@ -57,7 +58,7 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - name: Display configuration for Ubuntu
-        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        if: ${{ matrix.os == 'ubuntu-24.04' }}
         uses: pyvista/setup-headless-display-action@v4
         with:
           qt: true
