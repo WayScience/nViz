@@ -22,6 +22,11 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
+      # add the fork upstream for the remote
+      - name: Add fork remote
+        run: >
+          git remote add upstream https://github.com/
+          ${{ github.event.pull_request.head.repo.full_name }}.git
       # run pre-commit
       - name: Python setup
         uses: actions/setup-python@v5
