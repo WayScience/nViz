@@ -25,3 +25,7 @@ updates:
     schedule:
       # Check for updates to uv environment files every week
       interval: "weekly"
+    groups:
+      python-packages:
+        patterns:
+          - "*"
