@@ -2111,6 +2111,7 @@ name = "nviz"
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 version = "0.0.post1.dev8"
 >>>>>>> a5f821c (Add Synapse download enhancement to test real data (#33))
@@ -2119,6 +2120,8 @@ version = "0.0.post1.dev9"
 >>>>>>> 47195c2 (Add `nviz` CLI (#36))
 =======
 >>>>>>> 0606357 (Add `path_report` capability to help observe file and directory challenges (#42))
+=======
+>>>>>>> upstream/main
 source = { editable = "." }
 dependencies = [
     { name = "fire" },
