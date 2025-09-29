@@ -8,6 +8,7 @@ from itertools import groupby
 from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
+import skimage
 import tifffile as tiff
 import zarr
 from ome_zarr.io import parse_url as zarr_parse_url
@@ -15,6 +16,36 @@ from ome_zarr.writer import write_image as zarr_write_image
 
 from .image_meta import extract_z_slice_number_from_filename, generate_ome_xml
 
+def read_zstack_image(tiff_file_path):
+    """
+    Read a z-stack image from a TIFF file and ensure it is in uint16 format.
+
+    Parameters
+    ----------
+    tiff_file_path : str
+        Path to the TIFF file.
+
+    Returns
+    -------
+    np.ndarray
+        The processed z-stack image.
+    """
+    img = tiff.imread(tiff_file_path)
+    
+    if len(img.shape) > 5:
+        # determine if any of the dimensions is size of 1?
+        img = np.squeeze(img)
+    
+    if img.dtype != np.uint16:
+        if img.dtype in [np.float32, np.float64]:
+            # For float images, first rescale to 0-1 range, then convert
+            img = skimage.exposure.rescale_intensity(img, out_range=(0, 1))
+            img = skimage.img_as_uint(img)
+        else:
+            # For other integer types
+            img = skimage.img_as_uint(img)
+    
+    return img.astype(np.uint16)
 
 def image_set_to_arrays(
     image_dir: str,
@@ -55,7 +86,7 @@ def image_set_to_arrays(
         "images": {
             channel_map.get(filename_code, filename_code): np.stack(
                 [
-                    tiff.imread(tiff_file.path).astype(np.uint16)
+                    read_zstack_image(tiff_file.path).astype(np.uint16)
                     for tiff_file in sorted(
                         files,
                         key=lambda x: extract_z_slice_number_from_filename(x.name),
@@ -286,12 +317,16 @@ def tiff_to_ometiff(  # noqa: PLR0913
 
     # Collect image data
     for channel, stack in frame_zstacks["images"].items():
+        dim = len(stack.shape)
         images_data.append(stack)
         channel_names.append(channel)
 
     # Collect label data
     if label_dir:
         for compartment_name, stack in frame_zstacks["labels"].items():
+            if len(stack.shape) != dim:
+                if len(stack.shape) == 3:
+                    stack = np.expand_dims(stack, axis=0)
             labels_data.append(stack)
             label_names.append(compartment_name)
 
