@@ -139,6 +139,9 @@ def test_tiff_to_ometiff(
         metadata = tif.ome_metadata
         assert metadata is not None
 
+        assert tif.shape > 3  # Ensure there are multiple dimensions
+        assert tif.shape == 4  # includes channel names :)
+
         # Parse the OME-XML metadata
         root = ET.fromstring(metadata)
         channels = root.find(

@@ -127,7 +127,7 @@ def view_ometiff_with_napari(
 
     if not headless:
         # Start the Napari event loop
-        napari.run()
+        napari.run(force=True)
     else:
         logger.warning(
             "Running view in headless mode and returning a napari viewer object."
