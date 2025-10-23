@@ -37,8 +37,13 @@ def view_zarr_with_napari(
     # Check Zarr file structure
     frame_zarr = zarr.open(zarr_dir, mode="r")
 
+    if headless:
+        logger.warning(
+            "Running view in headless mode and returning a napari viewer object."
+        )
+
     # Visualize with napari, start in 3d mode
-    viewer = napari.Viewer(ndisplay=3)
+    viewer = napari.Viewer(ndisplay=3, show=bool(not headless))
 
     # Iterate through each channel in the Zarr file
     for channel_name in sorted(frame_zarr["images"].keys(), reverse=True):
@@ -56,14 +61,6 @@ def view_zarr_with_napari(
                 name=f"{label_name}",
                 scale=scaling_values,
             )
-
-    if not headless:
-        # Start the Napari event loop
-        napari.run()
-    else:
-        logger.warning(
-            "Running view in headless mode and returning a napari viewer object."
-        )
 
     # otherwise return the viewer
     return viewer
@@ -91,8 +88,13 @@ def view_ometiff_with_napari(
             otherwise None.
     """
 
+    if headless:
+        logger.warning(
+            "Running view in headless mode and returning a napari viewer object."
+        )
+
     # Visualize with napari, start in 3d mode
-    viewer = napari.Viewer(ndisplay=3)
+    viewer = napari.Viewer(ndisplay=3, show=bool(not headless))
 
     # Read and add layers from the combined OME-TIFF file
     with tiff.TiffFile(ometiff_path) as tif:
@@ -124,14 +126,6 @@ def view_ometiff_with_napari(
                     name=channel_name,
                     scale=scaling_values,
                 )
-
-    if not headless:
-        # Start the Napari event loop
-        napari.run()
-    else:
-        logger.warning(
-            "Running view in headless mode and returning a napari viewer object."
-        )
 
     # otherwise return the viewer
     return viewer

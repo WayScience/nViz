@@ -90,13 +90,13 @@ nviz_ome_tiff
 # view the ome-tiff in napari
 # (will open a new window and also returns the viewer object)
 viewer = nviz.view_ometiff_with_napari(
-    ometiff_path=nviz_ome_tiff, scaling_values=scaling_values
+    ometiff_path=nviz_ome_tiff, scaling_values=scaling_values, headless=True
 )
 
 # show the napari window within this notebook to help demonstrate output
-viewer.window.resize(1000, 700)
-viewer.camera.angles = (50, 50, 30)
-viewer.camera.zoom = 30
+viewer.window.resize(1300, 1100)
+viewer.camera.angles = (70, 30, 40)
+viewer.camera.zoom = 15
 nbscreenshot(viewer=viewer, canvas_only=False)
 
 # +
@@ -132,11 +132,11 @@ nviz_zarr
 # view the zarr in napari
 # (will open a new window and also returns the viewer object)
 viewer = nviz.view_zarr_with_napari(
-    zarr_dir=output_zarr_path, scaling_values=scaling_values
+    zarr_dir=output_zarr_path, scaling_values=scaling_values, headless=True
 )
 
 # show the napari window within this notebook to help demonstrate output
-viewer.window.resize(1000, 700)
-viewer.camera.angles = (50, 50, -30)
-viewer.camera.zoom = 30
+viewer.window.resize(1300, 1100)
+viewer.camera.angles = (-30, 10, 40)
+viewer.camera.zoom = 15
 nbscreenshot(viewer=viewer, canvas_only=False)

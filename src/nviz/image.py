@@ -4,6 +4,7 @@ Experiment with GFF image stacks to OME-ZARR with display in Napari.
 
 import os
 import pathlib
+import re
 from itertools import groupby
 from typing import Dict, List, Optional, Tuple, Union
 
@@ -13,7 +14,7 @@ import zarr
 from ome_zarr.io import parse_url as zarr_parse_url
 from ome_zarr.writer import write_image as zarr_write_image
 
-from .image_meta import extract_z_slice_number_from_filename, generate_ome_xml
+from .image_meta import generate_ome_xml
 
 
 def image_set_to_arrays(
@@ -51,14 +52,19 @@ def image_set_to_arrays(
             channel names and the values are numpy arrays of images.
     """
     # build a reference to the observations
+
     zstack_arrays = {
         "images": {
-            channel_map.get(filename_code, filename_code): np.stack(
+            channel_map.get(str(filename_code), str(filename_code)): np.stack(
                 [
                     tiff.imread(tiff_file.path).astype(np.uint16)
                     for tiff_file in sorted(
                         files,
-                        key=lambda x: extract_z_slice_number_from_filename(x.name),
+                        key=lambda x: int(
+                            re.search(
+                                r"\d+", x.name.split("_")[2].split(".")[0]
+                            ).group()
+                        ),
                     )
                 ]
             ).astype(np.uint16)
@@ -69,14 +75,15 @@ def image_set_to_arrays(
                         for file in os.scandir(image_dir)
                         if (file.name.endswith(".tif") or file.name.endswith(".tiff"))
                         and (
-                            file.name.split("_")[1] not in ignore
+                            file.name.split("_")[1]
+                            not in ignore  # keep channel-based ignore
                             if ignore is not None
                             else True
                         )
                     ],
-                    key=lambda x: x.name.split("_")[1],
+                    key=lambda x: x.name.split("_")[1],  # group by channel
                 ),
-                key=lambda x: x.name.split("_")[1],
+                key=lambda x: x.name.split("_")[1],  # group by channel
             )
         }
     }

@@ -2,11 +2,14 @@
 Tests for the image module.
 """
 
+import os
 import pathlib
+import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+import numpy as np
 import pytest
 import tifffile as tiff
 import zarr
@@ -43,6 +46,47 @@ def test_image_set_to_arrays(
     # check that we ignored what we should have
     elif ignore is not None:
         assert all(ignored not in result["images"] for ignored in ignore)
+
+    # verify per-channel z-order matches on-disk order
+    def _znum(name: str) -> int:
+        # digits from the 3rd underscore-separated token (handles e.g. 'ZS015')
+        token = name.split("_")[2].split(".")[0]
+        m = re.search(r"\d+", token)
+        assert m, f"No digits found in z token for filename: {name}"
+        return int(m.group())
+
+    # invert channel_map so we can go from display name -> code
+    inv_map = {v: k for k, v in channel_map.items()}
+
+    for disp_name, got_stack in result["images"].items():
+        # skip channels the user asked us to ignore
+        code = inv_map.get(disp_name, disp_name)
+        if ignore is not None and code in ignore:
+            continue
+
+        files = [
+            f
+            for f in os.scandir(image_dir)
+            if (f.name.endswith(".tif") or f.name.endswith(".tiff"))
+            and f.name.split("_")[1] == code
+        ]
+        files_sorted = sorted(files, key=lambda f: _znum(f.name))
+
+        # Rebuild expected stack (Z, Y, X) in the sorted order
+        expected_stack = np.stack(
+            [tiff.imread(f.path).astype(np.uint16) for f in files_sorted]
+        )
+
+        # Ensure shapes equal (catches “ragged stack” issues)
+        assert expected_stack.shape == got_stack.shape, (
+            f"{disp_name}: shape mismatch; expected {expected_stack.shape}"
+            f", got {got_stack.shape}"
+        )
+
+        # Ensure exact equality (confirms correct z-ordering)
+        assert np.array_equal(got_stack, expected_stack), (
+            f"{disp_name}: stacked data does not match expected z-order/content"
+        )
 
 
 @pytest.mark.parametrize(
