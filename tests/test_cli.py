@@ -65,7 +65,7 @@ def test_cli_tiff_to_zarr(
     assert returncode == 0
     assert stdout.strip() == output_path
 
-    stdout, stderr, returncode = run_cli_command(
+    stdout, _, returncode = run_cli_command(
         ["nviz", "view_zarr", output_path, scaling_values, "True"]
     )
 
