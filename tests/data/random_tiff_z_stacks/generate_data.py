@@ -36,7 +36,7 @@ def create_ellipsoid_mask(
     return (dz**2 + dy**2 + dx**2) <= 1.0
 
 
-def create_labeled_spheres_volume(
+def create_labeled_ellipsoid_volume(
     shape_zyx: Tuple[int, int, int],
     scales_zyx: Tuple[float, float, float],
     n_spheres: int = 24,
