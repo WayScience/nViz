@@ -364,6 +364,7 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
@@ -373,7 +374,7 @@
 <span class="kn">from</span> <span class="nn">ome_zarr.io</span> <span class="kn">import</span> <span class="n">parse_url</span> <span class="k">as</span> <span class="n">zarr_parse_url</span>
 <span class="kn">from</span> <span class="nn">ome_zarr.writer</span> <span class="kn">import</span> <span class="n">write_image</span> <span class="k">as</span> <span class="n">zarr_write_image</span>
 
-<span class="kn">from</span> <span class="nn">.image_meta</span> <span class="kn">import</span> <span class="n">extract_z_slice_number_from_filename</span><span class="p">,</span> <span class="n">generate_ome_xml</span>
+<span class="kn">from</span> <span class="nn">.image_meta</span> <span class="kn">import</span> <span class="n">generate_ome_xml</span>
 
 
 <div class="viewcode-block" id="image_set_to_arrays">
@@ -413,14 +414,19 @@
 <span class="sd">            channel names and the values are numpy arrays of images.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># build a reference to the observations</span>
+
     <span class="n">zstack_arrays</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;images&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="n">channel_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename_code</span><span class="p">,</span> <span class="n">filename_code</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+            <span class="n">channel_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename_code</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename_code</span><span class="p">)):</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
                 <span class="p">[</span>
                     <span class="n">tiff</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">tiff_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">tiff_file</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
                         <span class="n">files</span><span class="p">,</span>
-                        <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">extract_z_slice_number_from_filename</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                        <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span>
+                            <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                                <span class="sa">r</span><span class="s2">&quot;\d+&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+                        <span class="p">),</span>
                     <span class="p">)</span>
                 <span class="p">]</span>
             <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span>
@@ -431,14 +437,15 @@
                         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">image_dir</span><span class="p">)</span>
                         <span class="k">if</span> <span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.tif&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.tiff&quot;</span><span class="p">))</span>
                         <span class="ow">and</span> <span class="p">(</span>
-                            <span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore</span>
+                            <span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                            <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore</span>  <span class="c1"># keep channel-based ignore</span>
                             <span class="k">if</span> <span class="n">ignore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                             <span class="k">else</span> <span class="kc">True</span>
                         <span class="p">)</span>
                     <span class="p">],</span>
-                    <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>  <span class="c1"># group by channel</span>
                 <span class="p">),</span>
-                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>  <span class="c1"># group by channel</span>
             <span class="p">)</span>
         <span class="p">}</span>
     <span class="p">}</span>

@@ -399,8 +399,13 @@
     <span class="c1"># Check Zarr file structure</span>
     <span class="n">frame_zarr</span> <span class="o">=</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">zarr_dir</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">headless</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;Running view in headless mode and returning a napari viewer object.&quot;</span>
+        <span class="p">)</span>
+
     <span class="c1"># Visualize with napari, start in 3d mode</span>
-    <span class="n">viewer</span> <span class="o">=</span> <span class="n">napari</span><span class="o">.</span><span class="n">Viewer</span><span class="p">(</span><span class="n">ndisplay</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">viewer</span> <span class="o">=</span> <span class="n">napari</span><span class="o">.</span><span class="n">Viewer</span><span class="p">(</span><span class="n">ndisplay</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="ow">not</span> <span class="n">headless</span><span class="p">))</span>
 
     <span class="c1"># Iterate through each channel in the Zarr file</span>
     <span class="k">for</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">frame_zarr</span><span class="p">[</span><span class="s2">&quot;images&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -418,14 +423,6 @@
                 <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="n">scale</span><span class="o">=</span><span class="n">scaling_values</span><span class="p">,</span>
             <span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">headless</span><span class="p">:</span>
-        <span class="c1"># Start the Napari event loop</span>
-        <span class="n">napari</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;Running view in headless mode and returning a napari viewer object.&quot;</span>
-        <span class="p">)</span>
 
     <span class="c1"># otherwise return the viewer</span>
     <span class="k">return</span> <span class="n">viewer</span></div>
@@ -456,8 +453,13 @@
 <span class="sd">            otherwise None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="k">if</span> <span class="n">headless</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;Running view in headless mode and returning a napari viewer object.&quot;</span>
+        <span class="p">)</span>
+
     <span class="c1"># Visualize with napari, start in 3d mode</span>
-    <span class="n">viewer</span> <span class="o">=</span> <span class="n">napari</span><span class="o">.</span><span class="n">Viewer</span><span class="p">(</span><span class="n">ndisplay</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">viewer</span> <span class="o">=</span> <span class="n">napari</span><span class="o">.</span><span class="n">Viewer</span><span class="p">(</span><span class="n">ndisplay</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="ow">not</span> <span class="n">headless</span><span class="p">))</span>
 
     <span class="c1"># Read and add layers from the combined OME-TIFF file</span>
     <span class="k">with</span> <span class="n">tiff</span><span class="o">.</span><span class="n">TiffFile</span><span class="p">(</span><span class="n">ometiff_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">tif</span><span class="p">:</span>
@@ -489,14 +491,6 @@
                     <span class="n">name</span><span class="o">=</span><span class="n">channel_name</span><span class="p">,</span>
                     <span class="n">scale</span><span class="o">=</span><span class="n">scaling_values</span><span class="p">,</span>
                 <span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">headless</span><span class="p">:</span>
-        <span class="c1"># Start the Napari event loop</span>
-        <span class="n">napari</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;Running view in headless mode and returning a napari viewer object.&quot;</span>
-        <span class="p">)</span>
 
     <span class="c1"># otherwise return the viewer</span>
     <span class="k">return</span> <span class="n">viewer</span></div>
