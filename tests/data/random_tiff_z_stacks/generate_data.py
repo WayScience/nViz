@@ -28,7 +28,7 @@ def create_spheric_mask(
     center_zyx: Tuple[int, int, int],
     radii_zyx_vox: Tuple[float, float, float],
 ) -> np.ndarray:
-    """Return an ellipsoid mask inside the given shape."""
+    """Return an spheric mask inside the given shape."""
     z, y, x = np.indices(shape_zyx)
     dz = (z - center_zyx[0]) / radii_zyx_vox[0]
     dy = (y - center_zyx[1]) / radii_zyx_vox[1]
@@ -36,7 +36,7 @@ def create_spheric_mask(
     return (dz**2 + dy**2 + dx**2) <= 1.0
 
 
-def create_labeled_ellipsoid_volume(
+def create_labeled_spheres_volume(
     shape_zyx: Tuple[int, int, int],
     scales_zyx: Tuple[float, float, float],
     n_spheres: int = 24,
