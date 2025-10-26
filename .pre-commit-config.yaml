@@ -45,10 +45,10 @@ repos:
     -   id: yamllint
         exclude: pre-commit-config.yaml
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.14.1"
+    rev: "v0.14.2"
     hooks:
     -   id: ruff-format
-    -   id: ruff
+    -   id: ruff-check
 -   repo: https://github.com/rhysd/actionlint
     rev: v1.7.8
     hooks:
