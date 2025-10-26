@@ -64,6 +64,8 @@ def create_labeled_spheres_volume(
 
     attempts = 0
     max_attempts = n_spheres * 100
+    # try to add spheres until we reach the desired number
+    # or exceed max attempts
     while len(centers) < n_spheres and attempts < max_attempts:
         attempts += 1
         cz = rng.integers(margin_zyx[0], max(margin_zyx[0] + 1, Z - margin_zyx[0]))
