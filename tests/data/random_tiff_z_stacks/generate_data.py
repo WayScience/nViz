@@ -23,12 +23,12 @@ num_z_slices = 48
 image_shape = (128, 128)
 
 
-def create_ellipsoid_mask(
+def create_spheric_mask(
     shape_zyx: Tuple[int, int, int],
     center_zyx: Tuple[int, int, int],
     radii_zyx_vox: Tuple[float, float, float],
 ) -> np.ndarray:
-    """Return a binary ellipsoid mask inside the given shape."""
+    """Return an ellipsoid mask inside the given shape."""
     z, y, x = np.indices(shape_zyx)
     dz = (z - center_zyx[0]) / radii_zyx_vox[0]
     dy = (y - center_zyx[1]) / radii_zyx_vox[1]
@@ -88,7 +88,7 @@ def create_labeled_spheres_volume(
     # Label each sphere uniquely
     label_val = 1
     for cz, cy, cx in centers:
-        mask = create_ellipsoid_mask(shape_zyx, (cz, cy, cx), r_vox)
+        mask: np.ndarray = create_spheric_mask(shape_zyx, (cz, cy, cx), r_vox)
         vol[mask] = label_val
         label_val += 1
 
