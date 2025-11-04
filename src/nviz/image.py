@@ -37,7 +37,7 @@ def read_zstack_image(tiff_file_path):
         img = np.squeeze(img)
     
     if img.dtype != np.uint16:
-        if img.dtype in [np.float32, np.float64]:
+        if np.issubdtype(img.dtype, np.floating):
             # For float images, first rescale to 0-1 range, then convert
             img = skimage.exposure.rescale_intensity(img, out_range=(0, 1))
             img = skimage.img_as_uint(img)
